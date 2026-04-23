@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nikon Z 靈活色彩成像配方 by Philos | 相機旅圖</title>
+    
+    <meta name="description" content="探索 9 款專為 Nikon Z 系列與 NX Studio 打造的專屬靈活色彩成像配方。從日系空氣感、電影青橙到極致黑白，選擇一個配方以查看完整的相機設定與參數。">
+    <meta name="keywords" content="Nikon, Nikon Z8, Nikon Zf, 靈活色彩, Flexible Color, NX Studio, 色彩配方, 調色參數, 日系色調, 電影感, 街拍">
+    <meta name="author" content="Philos">
+    
+    <meta property="og:title" content="Nikon Z 靈活色彩成像配方 by Philos | 相機旅圖">
+    <meta property="og:description" content="探索 9 款專為 Nikon Z 系列與 NX Studio 打造的專屬靈活色彩成像配方。從日系空氣感、電影青橙到極致黑白，選擇一個配方以查看完整的相機設定與參數。">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="./images/og-image.jpg">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><rect x='5' y='30' width='110' height='80' rx='15' fill='%23FFE100'/><path d='M35,30 L45,12 H75 L85,30 Z' fill='%23FFE100'/><circle cx='60' cy='70' r='32' fill='%23000'/><g transform='translate(40.5, 52.75) scale(0.3)'><path d='M15,95 L80,25 H25 V5 H115 V20 L50,90 H105 V110 H15 Z' fill='%23FFE100'/></g></svg>">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        /* 隱藏預設滾動條，採用高質感暗色系自訂滾動條 */
+        body { margin: 0; padding: 0; background-color: #000000; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+    </style>
+</head>
+<body class="text-zinc-300 font-sans selection:bg-[#FFE100] selection:text-black overflow-hidden">
+    
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo, useRef } = React;
+
+        // --- Lucide Icons 手工 SVG 轉換 ---
+        const Icon = ({ path, className }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+                {path}
+            </svg>
+        );
+        const Camera = (p) => <Icon {...p} path={<><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></>} />;
+        const Sliders = (p) => <Icon {...p} path={<><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></>} />;
+        const Sunset = (p) => <Icon {...p} path={<><path d="M12 10V2"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m16 6-4 4-4-4"/><path d="M16 18a4 4 0 0 0-8 0"/></>} />;
+        const Waves = (p) => <Icon {...p} path={<><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></>} />;
+        const Contrast = (p) => <Icon {...p} path={<><circle cx="12" cy="12" r="10"/><path d="M12 18a6 6 0 0 0 0-12v12z"/></>} />;
+        const Film = (p) => <Icon {...p} path={<><rect width="20" height="20" x="2" y="2" rx="2.18" ry="2.18"/><line x1="7" x2="7" y1="2" y2="22"/><line x1="17" x2="17" y1="2" y2="22"/><line x1="2" x2="7" y1="12" y2="12"/><line x1="2" x2="7" y1="7" y2="7"/><line x1="2" x2="7" y1="17" y2="17"/><line x1="17" x2="22" y1="12" y2="12"/><line x1="17" x2="22" y1="7" y2="7"/><line x1="17" x2="22" y1="17" y2="17"/></>} />;
+        const CloudFog = (p) => <Icon {...p} path={<><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 17H7"/><path d="M17 21H9"/></>} />;
+        const Snowflake = (p) => <Icon {...p} path={<><line x1="2" x2="22" y1="12" y2="12"/><line x1="12" x2="12" y1="2" y2="22"/><path d="m20 16-4-4 4-4"/><path d="m4 8 4 4-4 4"/><path d="m16 4-4 4-4-4"/><path d="m8 20 4-4 4 4"/></>} />;
+        const CloudSun = (p) => <Icon {...p} path={<><path d="M12 2v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="M20 12h2"/><path d="m19.07 4.93-1.41 1.41"/><path d="M15.94 14A5 5 0 0 0 6.14 14H4a4 4 0 0 0 0 8h12a4 4 0 0 0 0-8h-1.06Z"/></>} />;
+        const AiryPortrait = (p) => <Icon {...p} path={<><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 8h-4"/><path d="M20 13h-4"/><path d="M21 18h-4"/></>} />;
+        const FilmPortrait = (p) => <Icon {...p} path={<><rect width="20" height="20" x="2" y="2" rx="2.18" ry="2.18"/><line x1="7" x2="7" y1="2" y2="22"/><line x1="17" x2="17" y1="2" y2="22"/><line x1="2" x2="7" y1="12" y2="12"/><line x1="2" x2="7" y1="7" y2="7"/><line x1="2" x2="7" y1="17" y2="17"/><line x1="17" x2="22" y1="12" y2="12"/><line x1="17" x2="22" y1="7" y2="7"/><line x1="17" x2="22" y1="17" y2="17"/><circle cx="12" cy="9.5" r="2.5"/><path d="M15.5 22v-1.5a3.5 3.5 0 0 0-3.5-3.5h-0a3.5 3.5 0 0 0-3.5 3.5V22"/></>} />;
+        const ToriiGate = (p) => <Icon {...p} path={<><path d="M4 6h16 M6 11h12 M8 6v14 M16 6v14 M12 6v5" /></>} />;
+        const Lightbulb = (p) => <Icon {...p} path={<><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></>} />;
+        const Building2 = (p) => <Icon {...p} path={<><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></>} />;
+        const Info = (p) => <Icon {...p} path={<><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></>} />;
+        const AlertTriangle = (p) => <Icon {...p} path={<><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></>} />;
+        const Zap = (p) => <Icon {...p} path={<><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></>} />;
+        const Aperture = (p) => <Icon {...p} path={<><circle cx="12" cy="12" r="10"/><path d="m14.31 8 5.74 9.94"/><path d="M9.69 8h11.48"/><path d="m7.38 12 5.74-9.94"/><path d="M9.69 16 3.95 6.06"/><path d="M14.31 16H2.83"/><path d="m16.62 12-5.74 9.94"/></>} />;
+        const ChevronRight = (p) => <Icon {...p} path={<><path d="m9 18 6-6-6-6"/></>} />;
+        const ChevronDown = (p) => <Icon {...p} path={<><path d="m6 9 6 6 6-6"/></>} />;
+        const Menu = (p) => <Icon {...p} path={<><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></>} />;
+        const X = (p) => <Icon {...p} path={<><path d="M18 6 6 18"/><path d="m6 6 12 12"/></>} />;
+        const Grid = (p) => <Icon {...p} path={<><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></>} />;
+        const User = (p) => <Icon {...p} path={<><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></>} />;
+        const Share2 = (p) => <Icon {...p} path={<><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></>} />;
+        const Check = (p) => <Icon {...p} path={<><polyline points="20 6 9 17 4 12"/></>} />;
+        const Maximize2 = (p) => <Icon {...p} path={<><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></>} />;
+        const Lock = (p) => <Icon {...p} path={<><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></>} />;
+        const Bell = (p) => <Icon {...p} path={<><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></>} />;
+        
+        // --- 社群圖示 ---
+        const Facebook = (p) => <Icon {...p} path={<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>} />;
+        const Instagram = (p) => <Icon {...p} path={<><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></>} />;
+        const Threads = (p) => <Icon {...p} path={<><path d="M14.5 11.5v1.5c0 1.4 1 2 2 2s2-1 2-2.5V11c0-5-3.5-8-8-8-5.5 0-9.5 4.5-9.5 10s4.5 10 10.5 10c2.5 0 5-1 6.5-2.5"/><path d="M16 11.5c0 3.3-2.2 5.5-5.5 5.5-3 0-5.5-2.2-5.5-5.5S7.5 6 10.5 6c1.6 0 3 .8 4 2"/></>} />;
+
+        // --- EXIF 專屬實心相機與鏡頭圖示 ---
+        const FilledCameraIcon = ({ className }) => (
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
+            <path d="M20 7h-3.4l-1.4-2.1A2 2 0 0 0 13.5 4h-3a2 2 0 0 0-1.7.9L7.4 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+            <circle cx="12" cy="13" r="4" fill="#1A1A1A"/>
+          </svg>
+        );
+
+        const FilledLensIcon = ({ className }) => (
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="currentColor" className={className}>
+            <path d="M4 11h2v10H4a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1z" opacity="0.4"/>
+            <path d="M7 9h12v14H7z" opacity="0.8"/>
+            <rect x="8" y="9" width="1.5" height="3" fill="#1A1A1A"/>
+            <rect x="11.5" y="9" width="1.5" height="3" fill="#1A1A1A"/>
+            <rect x="15" y="9" width="1.5" height="3" fill="#1A1A1A"/>
+            <rect x="8" y="20" width="1.5" height="3" fill="#1A1A1A"/>
+            <rect x="11.5" y="20" width="1.5" height="3" fill="#1A1A1A"/>
+            <rect x="15" y="20" width="1.5" height="3" fill="#1A1A1A"/>
+            <path d="M20 10h4l2 1.5v9L24 22h-4z" opacity="0.6"/>
+          </svg>
+        );
+
+        // --- Nikon 專屬品牌色 ---
+        const NIKON_YELLOW = "#FFE100";
+
+        const ZLogo = ({ className }) => (
+          <svg viewBox="0 0 120 120" className={className} fill="currentColor" preserveAspectRatio="xMidYMid meet">
+            <path d="M15,95 L80,25 H25 V5 H115 V20 L50,90 H105 V110 H15 Z" />
+          </svg>
+        );
+
+        const Z8Icon = ({ className }) => (
+          <svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+            <path d="M15 35 C15 25 20 25 30 25 L40 25 C45 25 48 20 50 16 L53 10 C56 6 74 6 77 10 L80 16 C82 20 85 25 90 25 L100 25 C110 25 115 30 115 40 L115 80 C115 90 110 95 100 95 L30 95 C20 95 15 90 15 80 Z" fill="#1A1A1A" stroke="#444" strokeWidth="2"/>
+            <path d="M50 16 C53 10 56 6 65 6 C74 6 77 10 80 16 C82 20 85 25 90 25 L40 25 C45 25 48 20 50 16 Z" fill="#0A0A0A" />
+            <path d="M15 35 C15 25 20 25 30 25 L40 25 L40 95 L30 95 C20 95 15 90 15 80 Z" fill="#111" />
+            <path d="M22 35 C18 50 18 60 22 70 L25 65 C22 55 22 40 25 38 Z" fill="#E60012" />
+            <circle cx="65" cy="60" r="30" fill="#0A0A0A" stroke="#333" strokeWidth="2"/>
+            <circle cx="65" cy="60" r="22" fill="#020617" stroke="#9CA3AF" strokeWidth="2"/>
+            <line x1="95" y1="35" x2="105" y2="35" stroke="#FFE100" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+        );
+
+        const ZfIcon = ({ className }) => (
+          <svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+            <g transform="matrix(0.85, 0, 0, 0.85, 9, 10)">
+              <rect x="18" y="24" width="12" height="4" rx="1" fill="#555" />
+              <rect x="35" y="20" width="16" height="8" rx="2" fill="#555" />
+              <rect x="85" y="20" width="16" height="8" rx="2" fill="#555" />
+              <circle cx="26" cy="25" r="3" fill="#E5E7EB" />
+              <rect x="15" y="28" width="90" height="18" fill="#2A2A2A" stroke="#444" strokeWidth="1.5"/>
+              <path d="M45 28 L52 14 L68 14 L75 28 Z" fill="#2A2A2A" stroke="#444" strokeWidth="1.5"/>
+              <rect x="15" y="46" width="90" height="47" rx="2" fill="#0A0A0A" stroke="#333" strokeWidth="1.5"/>
+              <path d="M15 46 L25 46 L25 93 L15 93 Z" fill="#111" />
+              <circle cx="60" cy="65" r="25" fill="#050505" stroke="#333" strokeWidth="2"/>
+              <circle cx="60" cy="65" r="18" fill="#1C1917" stroke="#FBBF24" strokeWidth="1"/>
+              <text x="90" y="42" fill="#FFF" fontSize="10" fontWeight="bold" fontFamily="serif" fontStyle="italic">f</text>
+            </g>
+          </svg>
+        );
+
+        const Z8DetailedSvg = ({ className }) => (
+          <svg viewBox="0 -10 300 280" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+            <defs>
+              <linearGradient id="z8Body" x1="0" y1="0" x2="300" y2="260">
+                <stop offset="0%" stopColor="#262626"/><stop offset="40%" stopColor="#1A1A1A"/><stop offset="100%" stopColor="#0A0A0A"/>
+              </linearGradient>
+              <linearGradient id="z8Grip" x1="0" y1="0" x2="100" y2="260">
+                <stop offset="0%" stopColor="#1A1A1A"/><stop offset="100%" stopColor="#050505"/>
+              </linearGradient>
+              <radialGradient id="lensGlassZ8" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#1E3A8A"/><stop offset="70%" stopColor="#0F172A"/><stop offset="100%" stopColor="#020617"/>
+              </radialGradient>
+              <linearGradient id="metalRingZ8" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#D4D4D8"/><stop offset="50%" stopColor="#71717A"/><stop offset="100%" stopColor="#3F3F46"/>
+              </linearGradient>
+            </defs>
+            <path d="M35,100 C35,70 45,65 70,65 L100,65 C108,65 112,58 116,48 L122,35 C126,26 135,22 150,22 C165,22 174,26 178,35 L184,48 C188,58 192,65 200,65 L230,65 C255,65 265,70 265,100 L265,200 C265,225 255,230 230,230 L70,230 C45,230 35,225 35,200 Z" fill="url(#z8Body)" stroke="#333" strokeWidth="2"/>
+            <path d="M100,65 C108,65 112,58 116,48 L122,35 C126,26 135,22 150,22 C165,22 174,26 178,35 L184,48 C188,58 192,65 200,65 Z" fill="#141414" stroke="#333" strokeWidth="2"/>
+            <path d="M35,100 C35,70 45,65 70,65 L90,65 L90,230 L70,230 C45,230 35,225 35,200 Z" fill="url(#z8Grip)" />
+            <path d="M52,85 C46,110 46,130 52,150 L58,145 C53,125 53,105 58,88 Z" fill="#E60012" />
+            <rect x="135" y="15" width="30" height="8" rx="2" fill="#0A0A0A" stroke="#222" strokeWidth="1"/>
+            <text x="150" y="50" fill="#FFF" fontSize="14" fontWeight="bold" fontFamily="sans-serif" textAnchor="middle" letterSpacing="2">Nikon</text>
+            <text x="228" y="95" fill="#FFF" fontSize="16" fontWeight="900" fontFamily="sans-serif" fontStyle="italic" letterSpacing="1">Z 8</text>
+            <circle cx="235" cy="115" r="10" fill="#111" stroke="#333" strokeWidth="1.5" />
+            <circle cx="235" cy="115" r="5" fill="#050505" />
+            <circle cx="225" cy="155" r="8" fill="#1A1A1A" stroke="#444" strokeWidth="1.5" />
+            <circle cx="225" cy="155" r="4" fill="#111" />
+            <rect x="220" y="195" width="12" height="18" rx="3" fill="#1A1A1A" stroke="#333" strokeWidth="1.5" />
+            <circle cx="150" cy="140" r="75" fill="#0A0A0A" stroke="#1A1A1A" strokeWidth="6"/>
+            <circle cx="150" cy="140" r="62" fill="transparent" stroke="url(#metalRingZ8)" strokeWidth="8"/>
+            <circle cx="150" cy="140" r="50" fill="#050505" stroke="#222" strokeWidth="2"/>
+            <circle cx="150" cy="140" r="42" fill="url(#lensGlassZ8)" stroke="#000" strokeWidth="2"/>
+            <path d="M115,110 C135,90 165,90 185,110" stroke="#60A5FA" strokeWidth="6" strokeLinecap="round" opacity="0.3"/>
+            <path d="M125,160 C140,175 160,175 175,160" stroke="#93C5FD" strokeWidth="3" strokeLinecap="round" opacity="0.2"/>
+            <circle cx="135" cy="125" r="12" fill="#93C5FD" opacity="0.2"/>
+            <circle cx="165" cy="155" r="6" fill="#FFF" opacity="0.15"/>
+          </svg>
+        );
+
+        const ZfDetailedSvg = ({ className }) => (
+          <svg viewBox="0 -20 300 260" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+            <defs>
+              <linearGradient id="zfTop" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#2A2A2A"/><stop offset="100%" stopColor="#111111"/>
+              </linearGradient>
+              <linearGradient id="zfDial" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#111"/><stop offset="25%" stopColor="#444"/><stop offset="50%" stopColor="#111"/><stop offset="75%" stopColor="#444"/><stop offset="100%" stopColor="#111"/>
+              </linearGradient>
+              <radialGradient id="lensGlassZf" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#451A03"/><stop offset="70%" stopColor="#1C1917"/><stop offset="100%" stopColor="#000000"/>
+              </radialGradient>
+            </defs>
+            <g transform="matrix(0.85, 0, 0, 0.85, 22.5, 21)">
+              <rect x="20" y="50" width="30" height="10" rx="2" fill="url(#brassDial)" stroke="#333" strokeWidth="1"/>
+              <rect x="55" y="45" width="45" height="15" rx="3" fill="url(#brassDial)" stroke="#333" strokeWidth="1"/>
+              <rect x="210" y="45" width="45" height="15" rx="3" fill="url(#brassDial)" stroke="#333" strokeWidth="1"/>
+              <circle cx="77.5" cy="40" r="6" fill="#E5E7EB" stroke="#4B5563" strokeWidth="2"/> 
+              <rect x="30" y="60" width="250" height="140" rx="6" fill="url(#zfBody)" stroke="#333" strokeWidth="2"/>
+              <rect x="35" y="80" width="240" height="115" rx="4" fill="#0A0A0A" />
+              <path d="M45 80 L60 80 L60 195 L45 195 Z" fill="#050505" /> 
+              <path d="M110 60 L125 25 L175 25 L190 60 Z" fill="#1A1A1A" stroke="#444" strokeWidth="2"/>
+              <path d="M125 25 L150 40 L175 25" stroke="#555" strokeWidth="2" fill="none"/>
+              <rect x="135" y="15" width="30" height="8" rx="1" fill="#000"/>
+              <text x="150" y="52" fill="#FFF" fontSize="14" fontWeight="bold" fontFamily="serif" textAnchor="middle" letterSpacing="1.5">Nikon</text>
+              <circle cx="150" cy="130" r="65" fill="#050505" stroke="#222" strokeWidth="4"/>
+              <circle cx="150" cy="130" r="55" fill="transparent" stroke="url(#brassDial)" strokeWidth="4"/>
+              <circle cx="150" cy="130" r="40" fill="url(#lensGlassZf)" stroke="#000" strokeWidth="2"/>
+              <path d="M125 105 Q150 90 170 110" stroke="#FBBF24" strokeWidth="4" strokeLinecap="round" opacity="0.4"/>
+              <circle cx="140" cy="115" r="8" fill="#F59E0B" opacity="0.3"/>
+              <text x="245" y="95" fill="#FFF" fontSize="18" fontWeight="bold" fontFamily="serif" fontStyle="italic">Z f</text>
+            </g>
+          </svg>
+        );
+
+        const catmullRom2bezier = (points) => {
+          if (points.length < 2) return '';
+          let d = `M ${points[0].x} ${points[0].y} `;
+          for (let i = 0; i < points.length - 1; i++) {
+            const p0 = i === 0 ? points[0] : points[i - 1];
+            const p1 = points[i];
+            const p2 = points[i + 1];
+            const p3 = i + 2 < points.length ? points[i + 2] : p2;
+            const cp1x = p1.x + (p2.x - p0.x) / 6;
+            const cp1y = p1.y + (p2.y - p0.y) / 6;
+            const cp2x = p2.x - (p3.x - p1.x) / 6;
+            const cp2y = p2.y - (p3.y - p1.y) / 6;
+            d += `C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2.x} ${p2.y} `;
+          }
+          return d;
+        };
+
+        const ToneCurveGraph = ({ points }) => {
+          const mappedPoints = points.map(p => ({ x: p.in, y: 255 - p.out }));
+          const pathD = catmullRom2bezier(mappedPoints);
+          return (
+            <div className="relative w-full aspect-square bg-[#111111] rounded-lg border border-white/5 p-4 flex items-center justify-center">
+              <svg viewBox="0 0 255 255" className="w-full h-full overflow-visible drop-shadow-[0_0_12px_rgba(255,225,0,0.2)]">
+                {[64, 128, 192].map(val => (
+                  <g key={val}>
+                    <line x1={val} y1="0" x2={val} y2="255" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
+                    <line x1="0" y1={val} x2="255" y2={val} stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
+                  </g>
+                ))}
+                <line x1="0" y1="255" x2="255" y2="0" stroke="rgba(255,255,255,0.15)" strokeWidth="1.5" strokeDasharray="4 4" />
+                <path d={pathD} fill="none" stroke={NIKON_YELLOW} strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+                {mappedPoints.map((p, i) => (
+                  <circle key={i} cx={p.x} cy={p.y} r="4.5" fill={NIKON_YELLOW} stroke="#111111" strokeWidth="2" />
+                ))}
+              </svg>
+            </div>
+          );
+        };
+
+        const SettingValue = ({ value, highlight = false }) => {
+          if (!value) return null;
+          const colorClass = highlight ? "text-[#FFE100]" : "text-white";
+          const parts = value.split(' (');
+          if (parts.length === 2) {
+            return (
+              <div className="flex flex-col gap-1.5 mt-0.5">
+                <span className={`font-medium ${colorClass} text-sm tracking-wide leading-none`}>{parts[0]}</span>
+                <span className="text-[11px] text-zinc-500 tracking-wide leading-tight">({parts[1]}</span>
+              </div>
+            );
+          }
+          return <div className={`font-medium ${colorClass} text-sm tracking-wide mt-0.5`}>{value}</div>;
+        };
+
+        const CameraTipAccordion = ({ type, tipText, zfGrain }) => {
+          const [isOpen, setIsOpen] = useState(false);
+          const isZ8 = type === 'z8';
+
+          const bgStyle = isZ8
+            ? 'bg-[#0A0A0A]/90 border-white/10 hover:border-[#FFE100]/30'
+            : 'bg-[#0A0A0A]/90 border-white/10 hover:border-zinc-400/40';
+
+          const activeBgStyle = isZ8
+            ? 'bg-gradient-to-br from-[#141414] to-[#1A1A1A] border-[#FFE100]/40 shadow-[0_0_20px_rgba(255,225,0,0.05)]'
+            : 'bg-gradient-to-br from-[#18181B] to-[#111111] border-zinc-400/40 shadow-[0_0_20px_rgba(255,255,255,0.03)]';
+
+          const badgeBorder = isZ8 ? "border-[#FFE100]/30 text-[#FFE100]" : "border-zinc-400/40 text-zinc-300";
+
+          return (
+            <div className={`rounded-xl border backdrop-blur-sm transition-all duration-300 overflow-hidden ${isOpen ? activeBgStyle : bgStyle}`}>
+              <button onClick={() => setIsOpen(!isOpen)} className="w-full flex items-center justify-between p-5 text-left focus:outline-none">
+                <div className="flex items-center gap-4">
+                  <div className="shrink-0 drop-shadow-md">
+                    {isZ8 ? <Z8Icon className="w-7 h-auto opacity-90" /> : <ZfIcon className="w-7 h-auto opacity-90" />}
+                  </div>
+                  <div className="flex flex-col">
+                     <div className="text-sm font-bold text-white tracking-widest uppercase flex items-center gap-2">
+                       <span className="uppercase">Nikon</span> <span className="flex items-center normal-case"><ZLogo className="w-3.5 h-3.5 shrink-0 mr-1" />{isZ8 ? '8' : 'f'}</span>
+                       <span className={`text-[9px] px-2 py-0.5 rounded border ${badgeBorder} uppercase`}>Exclusive</span>
+                     </div>
+                     <div className="text-[11px] text-zinc-500 mt-1">
+                       {isZ8 ? '旗艦機身實戰優化設定' : '復古機身盲操與底片設定'}
+                     </div>
+                  </div>
+                </div>
+                <div className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
+                  <ChevronDown className="w-5 h-5 text-zinc-500" />
+                </div>
+              </button>
+
+              <div className={`grid transition-all duration-300 ease-in-out ${isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                <div className="overflow-hidden">
+                  <div className="px-5 pb-12 md:pb-20 pt-6 border-t border-white/5 flex flex-col md:flex-row relative">
+                    <div className="relative z-10 w-full md:w-2/3 pr-4">
+                       <p className={`text-sm text-zinc-300 leading-relaxed ${!isZ8 && zfGrain ? 'mb-8' : 'mb-4'}`}>
+                         {tipText}
+                       </p>
+                       {!isZ8 && zfGrain && (
+                          <div className="inline-flex flex-wrap items-center gap-3 bg-black/40 border border-zinc-500/30 px-3.5 py-2.5 rounded-lg shadow-sm">
+                             <div className="flex items-center gap-2 text-zinc-300 border-r border-white/10 pr-3">
+                               <Film className="w-4 h-4" />
+                               <span className="text-[10px] font-bold tracking-widest uppercase">底片顆粒設定</span>
+                             </div>
+                             <div className="flex items-center gap-2 text-xs">
+                               <span className="text-zinc-500">顆粒量:</span>
+                               <span className={`font-medium ${zfGrain.amount === '關閉' ? 'text-zinc-500' : 'text-white'}`}>{zfGrain.amount}</span>
+                             </div>
+                             <div className="flex items-center gap-2 text-xs">
+                               <span className="text-zinc-500">粗細:</span>
+                               <span className={`font-medium ${zfGrain.size === '-' ? 'text-zinc-500' : 'text-white'}`}>{zfGrain.size}</span>
+                             </div>
+                           </div>
+                       )}
+                    </div>
+                    <div className="hidden md:flex absolute right-0 bottom-0 top-0 w-1/3 items-center justify-end pr-4 pointer-events-none opacity-40">
+                       {isZ8 ? <Z8DetailedSvg className="w-40 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]" /> : <ZfDetailedSvg className="w-40 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]" />}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        };
+
+        const SiteFooter = () => (
+          <footer className="mt-20 pt-10 pb-8 border-t border-white/10 flex flex-col items-center gap-6 relative z-10 w-full">
+            <div className="flex items-center gap-4">
+              <a href="https://www.facebook.com/phototravel.tw" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-[#FFE100] bg-[#111111] border border-white/5 hover:border-[#FFE100]/30 p-2.5 rounded-full transition-all duration-300">
+                <Facebook className="w-4 h-4" />
+              </a>
+              <a href="https://www.instagram.com/philoschen/" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-[#FFE100] bg-[#111111] border border-white/5 hover:border-[#FFE100]/30 p-2.5 rounded-full transition-all duration-300">
+                <Instagram className="w-4 h-4" />
+              </a>
+              <a href="https://www.threads.com/@philoschen" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-[#FFE100] bg-[#111111] border border-white/5 hover:border-[#FFE100]/30 p-2.5 rounded-full transition-all duration-300">
+                <Threads className="w-4 h-4" />
+              </a>
+            </div>
+            <div className="flex flex-col items-center gap-2 text-center">
+              <div className="text-xs text-zinc-500 tracking-wider font-light">
+                © Copyright 2026 <a href="https://www.phototravel.tw/" target="_blank" rel="noopener noreferrer" className="text-zinc-300 hover:text-[#FFE100] transition-colors font-medium border-b border-transparent hover:border-[#FFE100]/50 pb-0.5">PHOTOTRAVEL.tw</a> All Rights Reserved.
+              </div>
+              <div className="flex flex-col items-center gap-1 mt-2">
+                <div className="text-[10px] text-zinc-600 tracking-widest uppercase">Nikon Imaging Recipes Created By Philos</div>
+                <div className="text-[9px] text-zinc-700 tracking-widest uppercase">Optimized for Z-Series</div>
+              </div>
+            </div>
+          </footer>
+        );
+
+        // --- 預設 EXIF 模版 ---
+        const defaultExif = {
+            camera: 'NIKON Z f', lens: 'NIKKOR Z 40mm f/2', date: '2025/11/01 下午03:50:50', focalLength: '40mm',
+            mode: 'A', iso: '100', shutter: '1/2000 秒', aperture: '2', ev: '0.0 EV',
+            focusMode: 'AF-S', focusPriority: '對焦', afArea: '單點 AF',
+            adl: '自動', metering: '矩陣測光', wb: 'Auto1', skinSoftening: '關閉', pib: '關閉', flash: '---'
+        };
+
+        // --- 配方資料庫 ---
+        const profiles = [
+          {
+            id: 'PH_BlueSky',
+            name: 'BlueSky',
+            icon: <CloudSun className="w-5 h-5" />,
+            style: '戶外自然風光色系',
+            scenes: ['風景', '人像'],
+            themeColor: 'rgba(14, 165, 233, 0.25)',
+            desc: '針對戶外藍天與陽光進行優化，帶來清透的空氣感，保留自然舒適的環境色彩與細節。',
+            camera: { metering: '視情況調整', wb: '5000K (還原自然光)', adl: '標準', ev: '+0.3 到 +0.7 (依光線提亮)', pib: 'M-Y向M +0.5' },
+            cameraTips: {
+              z8: '面對大面積天空與戶外強光，可善用 Z8 的自訂鍵進行快捷曝光鎖定 (AE-L)，避免重新構圖時亮度亂跳。',
+              zf: '戶外變幻莫測的光線下，Zf 的實體黃銅轉盤讓你能極度輕易地轉動調整 EV，絕不錯失美好的自然光影。'
+            },
+            zfGrain: { amount: '關閉', size: '-' },
+            curve: [ { point: '純黑點', in: 0, out: 15 }, { point: '陰影區', in: 60, out: 65 }, { point: '中間調', in: 128, out: 130 }, { point: '亮部區', in: 190, out: 195 }, { point: '純白點', in: 255, out: 240 } ],
+            details: { clarity: '+0.50', mid: '+0.50', sharp: '+1.00', quick: '0.00' },
+            gallery: [
+              { thumb: './images/thumb/DSC_0284.avif', full: './images/full/DSC_0284.avif', exif: { ...defaultExif, camera: 'Nikon Z f', lens: 'NIKKOR Z 26mm f/2.8', date: '2026/01/14 08:04:22.27', focalLength: '26mm', mode: 'M', iso: '100', shutter: '1/2000秒(自動)', aperture: '2.8', ev: '0 EV', focusMode: 'AF-S', focusPriority: '對焦', afArea: '廣闊區域 AF(大)', adl: '關閉', metering: '重點測光', wb: 'Auto0, 0, 0 (4660K)', skinSoftening: '關閉', pib: '關閉', flash: '---' } },
+              { thumb: './images/thumb/DSC_3540.avif', full: './images/full/DSC_3540.avif', exif: { ...defaultExif, camera: 'Nikon Z 8', lens: 'NIKKOR Z 24-120mm f/4 S', date: '2025/08/24 17:20:03.98', focalLength: '24mm', mode: 'M', iso: '100', shutter: '1/250秒(電子快門)', aperture: '7.1', ev: '0 EV', focusMode: 'MF', focusPriority: '對焦', afArea: '單點 AF', adl: '標準', metering: '矩陣測光', wb: '色溫(3920K), 0, M1.00 (3920K)', skinSoftening: '關閉', pib: '關閉', flash: '---' } },
+              { thumb: './images/thumb/DSC_1855.avif', full: './images/full/DSC_1855.avif', exif: { ...defaultExif, camera: 'Nikon Z 8', lens: 'NIKKOR Z 24-120mm f/4 S', date: '2025/05/16 17:18:09.71', focalLength: '24mm', mode: 'M', iso: '200', shutter: '1/400秒(電子快門)', aperture: '8', ev: '0 EV', focusMode: 'AF-S', focusPriority: '對焦', afArea: '自動區域 AF', adl: '標準', metering: '矩陣測光', wb: '自然光(自動), 0, 0 (5330K)', skinSoftening: '關閉', pib: '模式 1,色相 M2.5,亮度 -1.5', flash: '---' } }
+            ]
+          },
+          {
+            id: 'PH_CityLight',
+            name: 'CityLight',
+            icon: <Building2 className="w-5 h-5" />,
+            style: '都會城市的光影',
+            scenes: ['建築', '街拍'],
+            themeColor: 'rgba(30, 41, 59, 0.4)',
+            desc: '尋找城市光影的美麗，暴力壓暗剪影，極端抽色幾乎只留深邃藍天與混凝土的強烈對比。',
+            camera: { metering: '高光偏重測光', wb: '4000K~4200K (冷冽科技感)', adl: '關閉 或 低', ev: '視情況調整', pib: '有人物時：M-Y向M +0.5, 亮度軸 +0.5' },
+            cameraTips: {
+              z8: '強烈建議使用 RAW 拍攝，Z8 龐大深不可測的暗部寬容度讓你在套用此極端壓暗配方後，後期仍保有無限微調空間。',
+              zf: '將 ISO 設定為自動並限制上限，專注於利用實體快門與 EV 轉盤控制這組賽博龐克的冷冽感，享受盲操的純粹。'
+            },
+            zfGrain: { amount: '低', size: '細' },
+            curve: [ { point: '純黑點', in: 0, out: 0 }, { point: '陰影區', in: 60, out: 30 }, { point: '中間調', in: 128, out: 115 }, { point: '亮部區', in: 190, out: 200 }, { point: '純白點', in: 255, out: 245 } ],
+            details: { clarity: '+2.50', mid: '+1.50', sharp: '+1.00', quick: '0.00' },
+            gallery: [
+              { isVertical: true, thumb: './images/thumb/DSC_1747.avif', full: './images/full/DSC_1747.avif', exif: { ...defaultExif, camera: 'Nikon Z 8', lens: 'NIKKOR Z 24-120mm f/4 S', date: '2025/05/16 13:31:10.19', focalLength: '24mm', mode: 'M', iso: '100', shutter: '1/500秒(電子快門)', aperture: '4', ev: '0 EV', focusMode: 'AF-S', focusPriority: '對焦', afArea: '自動區域 AF', adl: '標準', metering: '矩陣測光', wb: '自然光(自動), 0, 0 (6230K)', skinSoftening: '關閉', pib: '模式 1,色相 M2.5,亮度 -1.5', flash: '---' } },
+              { isVertical: true, thumb: './images/thumb/DSC_0808.avif', full: './images/full/DSC_0808.avif', exif: { ...defaultExif, camera: 'Nikon Z 8', lens: 'NIKKOR Z 24-120mm f/4 S', date: '2025/04/03 15:42:05.89', focalLength: '31mm', mode: 'M', iso: '200', shutter: '1/250秒(電子快門)', aperture: '5', ev: '0 EV', focusMode: 'AF-C', focusPriority: '對焦', afArea: '自動區域 AF', adl: '標準', metering: '矩陣測光', wb: '自然光(自動), 0, 0 (5920K)', skinSoftening: '關閉', pib: '模式 1,色相 M2.5,亮度 -1.5', flash: '---' } },
+              { isVertical: true, thumb: './images/thumb/DSC_0038.avif', full: './images/full/DSC_0038.avif', exif: { ...defaultExif, camera: 'Nikon Z f', lens: 'NIKKOR Z 40mm f/2', date: '2025/12/17 08:04:09.29', focalLength: '40mm', mode: 'A', iso: '100', shutter: '1/250秒(自動)', aperture: '5.6', ev: '0 EV', focusMode: 'AF-S', focusPriority: '對焦', afArea: '廣闊區域 AF(大)', adl: '自動', metering: '偏重中央測光', wb: 'Auto0, 0, 0 (8080K)', skinSoftening: '關閉', pib: '關閉', flash: '---' } }
+            ]
+          },
+          {
+            id: 'PH_IndoorLight',
+            name: 'IndoorLight',
+            icon: <Lightbulb className="w-5 h-5" />,
+            style: '室內建築光影極簡白',
+            scenes: ['建築', '街拍'],
+            themeColor: 'rgba(255, 255, 255, 0.1)',
+            desc: '明亮通透的 High-key，乾淨去色的極簡減法美學，俐落的幾何網格陰影。',
+            camera: { metering: '高光偏重測光', wb: '自動 或 4500K (淨化室內黃光)', adl: '關閉 或 低', ev: '+0.3 到 +0.7 (強制空間通透)', pib: '不適用' },
+            cameraTips: {
+              z8: '使用 Z8 的四軸翻轉螢幕進行低角度盲拍，搭配超廣角鏡頭展現無壓縮的幾何天棚與倒影張力。',
+              zf: '以較慢的步調上腳架構圖，搭配實體轉盤的微調，將這組極簡白金屬配方發揮出宛如建築雜誌般的靜謐感。'
+            },
+            zfGrain: { amount: '關閉', size: '-' },
+            curve: [ { point: '純黑點', in: 0, out: 10 }, { point: '陰影區', in: 60, out: 45 }, { point: '中間調', in: 128, out: 140 }, { point: '亮部區', in: 190, out: 210 }, { point: '純白點', in: 255, out: 245 } ],
+            details: { clarity: '+2.00', mid: '+1.50', sharp: '+1.00', quick: '0.00' },
+            gallery: [
+              { isVertical: true, thumb: './images/thumb/DSC_0050.avif', full: './images/full/DSC_0050.avif', exif: { ...defaultExif, ccamera: 'Nikon Z 8', lens: 'NIKKOR Z 24-120mm f/4 S', date: '2025/03/22 15:06:25.36', focalLength: '24mm', mode: 'M', iso: '400', shutter: '1/400秒(電子快門)', aperture: '4', ev: '0 EV', focusMode: 'AF-C', focusPriority: '對焦', afArea: '自動區域 AF', adl: '自動', metering: '矩陣測光', wb: 'Auto0, 0, 0 (4540K)', skinSoftening: '關閉', pib: '關閉', flash: '---' } },
+              { isVertical: true, thumb: './images/thumb/DSC_0734.avif', full: './images/full/DSC_0734.avif', exif: { ...defaultExif, camera: 'Nikon Z 8', lens: 'NIKKOR Z 24-120mm f/4 S', date: '2025/04/03 14:39:05.59', focalLength: '24mm', mode: 'M', iso: '200', shutter: '1/100秒(電子快門)', aperture: '4.5', ev: '0 EV', focusMode: 'AF-C', focusPriority: '對焦', afArea: '自動區域 AF', adl: '標準', metering: '矩陣測光', wb: '自然光(自動), 0, 0 (6240K)', skinSoftening: '關閉', pib: '模式 1,色相 M2.5,亮度 -1.5', flash: '---' } },
+              { isVertical: true, thumb: './images/thumb/DSC_6238.avif', full: './images/full/DSC_6238.avif', exif: { ...defaultExif, camera: 'Nikon Z 8', lens: 'NIKKOR Z 24-120mm f/4 S', date: '2026/01/03 19:51:46.38', focalLength: '91mm', mode: 'M', iso: '100', shutter: '1/200秒(電子快門)', aperture: '6.3', ev: '0 EV', focusMode: 'AF-S', focusPriority: '對焦', afArea: '廣闊區域 AF(大)', adl: '標準', metering: '矩陣測光', wb: 'Auto1, 0, 0 (6550K)', skinSoftening: '關閉', pib: '關閉', flash: 'SB-910, i-TTL-BL, 前簾同步, 反射閃光/柔光罩' } }
+            ]
+          },
+          {
+            id: 'PH_SoftPortrait',
+            name: 'SoftPortrait',
+            icon: <AiryPortrait className="w-5 h-5" />,
+            style: '室內晨光空氣感',
+            scenes: ['人像', '美食', '街拍'],
+            themeColor: 'rgba(147, 197, 253, 0.25)',
+            desc: '日系居家空氣感，運用窗邊漫射光，營造青藍色冷調與木質暖調的舒適碰撞。',
+            camera: { metering: '矩陣 / 亮部偏重', wb: '5200K 偏洋紅 M0.5 (通透紅潤)', adl: '標準 或 高', ev: '+0.7 到 +1.0 (強制提亮)', pib: 'M-Y向M +0.5, 亮度軸 +0.5' },
+            cameraTips: {
+              z8: '室內微光下可放心推高 ISO，Z8 優異的雜訊處理搭配此配方的柔和度，反而能呈現非常漂亮的底片顆粒感。',
+              zf: '復古的快門聲與這組慵懶晨光是絕配。強烈建議在選單內開啟「柔和肌膚」功能（低或中），與此配方疊加能帶來極致的透明感直出。'
+            },
+            zfGrain: { amount: '低', size: '粗' },
+            curve: [ { point: '純黑點', in: 0, out: 15 }, { point: '陰影區', in: 60, out: 65 }, { point: '中間調', in: 128, out: 135 }, { point: '亮部區', in: 190, out: 195 }, { point: '純白點', in: 255, out: 240 } ],
+            details: { clarity: '-1.00', mid: '0.00', sharp: '+0.50', quick: '0.00' },
+            gallery: [
+              { isVertical: true, thumb: './images/thumb/DSC_0180.avif', full: './images/full/DSC_0180.avif', exif: { ...defaultExif, camera: 'Nikon Z f', lens: 'NIKKOR Z 40mm f/2', date: '2025/12/27 14:13:12.83', focalLength: '40mm', mode: 'M', iso: '250', shutter: '1/60秒(自動)', aperture: '2.8', ev: '0 EV', focusMode: 'AF-S', focusPriority: '對焦', afArea: '廣闊區域 AF(大)', adl: '自動', metering: '重點測光', wb: 'Auto0, 0, 0 (5160K)', skinSoftening: '標準', pib: '關閉', flash: '---' } },
+              { thumb: './images/thumb/DSC_0956.avif', full: './images/full/DSC_0956.avif', exif: { ...defaultExif, camera: 'Nikon Z f', lens: 'NIKKOR Z 40mm f/2', date: '2026/04/19 14:15:05.60', focalLength: '40mm', mode: 'M', iso: '400', shutter: '1/1000秒(自動)', aperture: '4', ev: '0 EV', focusMode: 'AF-C', focusPriority: '對焦', afArea: '自動區域 AF', adl: '低', metering: '高光偏重', wb: '色溫(5500K), 0, 0 (5500K)', skinSoftening: '關閉', pib: '關閉', flash: '---' } },
+              { isVertical: true, thumb: './images/thumb/DSC_6372.avif', full: './images/full/DSC_6372.avif', exif: { ...defaultExif, camera: 'Nikon Z 8', lens: 'NIKKOR Z 24-120mm f/4 S', date: '2026/02/18 16:18:19.41', focalLength: '31.5mm', mode: 'M', iso: '1600', shutter: '1/160秒(電子快門)', aperture: '4', ev: '0 EV', focusMode: 'AF-S', focusPriority: '對焦', afArea: '廣闊區域 AF(大)', adl: '標準', metering: '矩陣測光', wb: 'Auto1, 0, 0 (3360K)', skinSoftening: '關閉', pib: '關閉', flash: '---' } }
+            ]
+          },
+          {
+            id: 'PH_OutdoorPortrait',
+            name: 'OutdoorPortrait',
+            icon: <FilmPortrait className="w-5 h-5" />,
+            style: '夏日青橙戶外人像',
+            scenes: ['人像', '街拍', '風景'],
+            themeColor: 'rgba(245, 158, 11, 0.25)',
+            desc: '經典 Teal & Orange 配色，深邃青藍與濃郁橙黃的視覺衝擊，帶有底片褪色與柔焦感。',
+            camera: { metering: '高光偏重測光', wb: '5800K~6000K (濃郁暖陽膚色)', adl: '低 或 關閉', ev: '+0.3 到 +0.7 (確保臉部曝光)', pib: 'M-Y向M +0.5, 亮度軸 +0.5' },
+            cameraTips: {
+              z8: '戶外強光下人像拍攝，可設定一組自訂選單專門切換至高光偏重測光，搭配此配方避免天空與海面死白。',
+              zf: '利用實體 EV 轉盤強勢介入 +0.3~+0.7，在刺眼陽光下不需頻繁檢視螢幕即可確保女孩臉部曝光白皙。'
+            },
+            zfGrain: { amount: '標準', size: '粗' },
+            curve: [ { point: '純黑點', in: 0, out: 15 }, { point: '陰影區', in: 60, out: 50 }, { point: '中間調', in: 128, out: 128 }, { point: '亮部區', in: 190, out: 195 }, { point: '純白點', in: 255, out: 245 } ],
+            details: { clarity: '-1.50', mid: '+0.50', sharp: '0.00', quick: '0.00' },
+            gallery: [
+              { isVertical: true, thumb: './images/thumb/DSC_6280.avif', full: './images/full/DSC_6280.avif', exif: { ...defaultExif, camera: 'Nikon Z 8', lens: 'NIKKOR Z 24-120mm f/4 S', date: '2026/02/18 15:03:04.53', focalLength: '31mm', mode: 'M', iso: '400', shutter: '1/125秒(電子快門)', aperture: '4.5', ev: '0 EV', focusMode: 'AF-S', focusPriority: '對焦', afArea: '廣闊區域 AF(大)', adl: '標準', metering: '矩陣測光', wb: 'Auto1, 0, 0 (5660K)', skinSoftening: '關閉', pib: '關閉', flash: '---' } },
+              { thumb: './images/thumb/DSC_1586.avif', full: './images/full/DSC_1586.avif', exif: { ...defaultExif, camera: 'Nikon Z 8', lens: 'NIKKOR Z 24-120mm f/4 S', date: '2025/05/03 10:58:46.59', focalLength: '39mm', mode: 'M', iso: '90', shutter: '1/189.0秒(電子快門)', aperture: '4', ev: '0 EV', focusMode: 'AF-C', focusPriority: '對焦', afArea: '自動區域 AF', adl: '標準', metering: '矩陣測光', wb: '自然光(自動), 0, 0 (5220K)', skinSoftening: '標準', pib: '模式 1,色相 Y1.0,亮度 +0.5', flash: '---' } },
+              { thumb: './images/thumb/DSC_0632.avif', full: './images/full/DSC_0632.avif', exif: { ...defaultExif, camera: 'Nikon Z f', lens: 'NIKKOR Z 26mm f/2.8', date: '2026/02/21 15:42:03.03', focalLength: '26mm', mode: 'M', iso: '400', shutter: '1/1000秒(自動)', aperture: '2.8', ev: '0 EV', focusMode: 'AF-S', focusPriority: '對焦', afArea: '廣闊區域 AF(大)', adl: '關閉', metering: '重點測光', wb: 'Auto0, 0, 0 (5320K)', skinSoftening: '關閉', pib: '關閉', flash: '---' } }
+            ]
+          },
+          {
+            id: 'PH_KamakuraCyan',
+            name: 'KamakuraCyan',
+            icon: <Waves className="w-5 h-5" />,
+            style: '鎌倉青 / 海濱青春電影感',
+            scenes: ['風景', '人像', '街拍'],
+            themeColor: 'rgba(6, 182, 212, 0.25)',
+            desc: '大面積的青藍色調、極度柔軟的高光邊緣，以及像動畫電影般的粉彩低對比。',
+            camera: { metering: '視光線而定', wb: '4800K 偏綠 G0.25 (日系粉彩青)', adl: '標準 或 低', ev: '+0.3 到 +0.7 (強制提亮防發灰)', pib: 'M-Y 軸 0, 亮度軸 +0.5' },
+            cameraTips: {
+              z8: '在海邊逆光環境下，可善用 Z8 的 3D 追蹤對焦死守人物眼睛，將注意力全放於青藍色冷光的構圖變化。',
+              zf: '復古的機身搭配此底片色調，強烈推薦搭配手動老鏡拍攝，享受慢節奏的對焦與浪漫的海濱氛圍。'
+            },
+            zfGrain: { amount: '低', size: '標準' },
+            curve: [ { point: '純黑點', in: 0, out: 25 }, { point: '陰影區', in: 60, out: 60 }, { point: '中間調', in: 128, out: 130 }, { point: '亮部區', in: 190, out: 195 }, { point: '純白點', in: 255, out: 235 } ],
+            details: { clarity: '-1.75', mid: '-1.00', sharp: '-0.50', quick: '0.00' },
+            gallery: [
+              { thumb: './images/thumb/DSC_1228.avif', full: './images/full/DSC_1228.avif', exif: { ...defaultExif, ccamera: 'Nikon Z 8', lens: 'NIKKOR Z 100-400mm f/4.5-5.6 VR S', date: '2025/04/19 09:37:22.43', focalLength: '195mm', mode: 'M', iso: '200', shutter: '1/80秒(電子快門)', aperture: '5', ev: '0 EV', focusMode: 'AF-S', focusPriority: '對焦', afArea: '自動區域 AF', adl: '標準', metering: '矩陣測光', wb: '自然光(自動), 0, 0 (5320K)', skinSoftening: '關閉', pib: '模式 1,色相 M2.5,亮度 -1.5', flash: '---' } },
+              { thumb: './images/thumb/DSC_0793.avif', full: './images/full/DSC_0793.avif', exif: { ...defaultExif, camera: 'Nikon Z 8', lens: 'NIKKOR Z 24-120mm f/4 S', date: '2025/04/03 15:24:04.91', focalLength: '24mm', mode: 'M', iso: '200', shutter: '1/1000秒(電子快門)', aperture: '4', ev: '0 EV', focusMode: 'AF-C', focusPriority: '對焦', afArea: '自動區域 AF', adl: '標準', metering: '矩陣測光', wb: '自然光(自動), 0, 0 (5880K)', skinSoftening: '標準', pib: '模式 1,色相 M2.5,亮度 -1.5', flash: '---' } },
+              { isVertical: true, thumb: './images/thumb/DSC_0030.avif', full: './images/full/DSC_0030.avif', exif: { ...defaultExif, camera: 'Nikon Z f', lens: 'NIKKOR Z 40mm f/2', date: '2025/12/14 16:19:58.16', focalLength: '40mm', mode: 'M', iso: '200', shutter: '1/60秒(自動)', aperture: '4', ev: '0 EV', focusMode: 'AF-S', focusPriority: '對焦', afArea: '廣闊區域 AF(小)', adl: '自動', metering: '偏重中央測光', wb: 'Auto0, 0, 0 (5290K)', skinSoftening: '關閉', pib: '關閉', flash: '---' } }
+            ]
+          },
+          {
+            id: 'PH_UrbanFilm',
+            name: 'UrbanFilm',
+            icon: <ToriiGate className="w-5 h-5" />,
+            style: '日系街頭啞光底片',
+            scenes: ['街拍', '人像', '建築'],
+            themeColor: 'rgba(13, 148, 136, 0.2)',
+            desc: '融合硬派街頭感與日系底片的溫柔，強烈卻不刺眼的硬光，帶有褪色啞光暗部。',
+            camera: { metering: '高光偏重測光', wb: '5200K 晴天 (固定底片基調)', adl: '關閉 或 低', ev: '視情況拿捏', pib: 'M-Y向M +0.5, 亮度軸 +0.5' },
+            cameraTips: {
+              z8: '搭配 Z8 的高速無黑屏連拍，精準捕捉街頭路人走入幾何硬光的決定性瞬間，確保光影切割完美落在人物上。',
+              zf: '街拍時將快門與 ISO 轉盤固定，專心利用 EV 轉盤控制這組底片色調的明暗氛圍，享受純粹的街頭捕捉。'
+            },
+            zfGrain: { amount: '標準', size: '標準' },
+            curve: [ { point: '純黑點', in: 0, out: 15 }, { point: '陰影區', in: 60, out: 45 }, { point: '中間調', in: 128, out: 125 }, { point: '亮部區', in: 190, out: 195 }, { point: '純白點', in: 255, out: 240 } ],
+            details: { clarity: '-1.50', mid: '+0.50', sharp: '+0.50', quick: '0.00' },
+            gallery: [
+              { thumb: './images/thumb/DSC_2023.avif', full: './images/full/DSC_2023.avif', exif: { ...defaultExif, camera: 'Nikon Z 8', lens: 'NIKKOR Z 24-120mm f/4 S', date: '2025/05/17 13:33:24.14', focalLength: '24mm', mode: 'M', iso: '100', shutter: '1/320秒(電子快門)', aperture: '7.1', ev: '0 EV', focusMode: 'AF-S', focusPriority: '對焦', afArea: '自動區域 AF', adl: '標準', metering: '矩陣測光', wb: '色溫(4880K), 0, M1.00 (4880K)', skinSoftening: '關閉', pib: '模式 1,色相 M2.5,亮度 -1.5', flash: '---' } },
+              { thumb: './images/thumb/DSC_0090.avif', full: './images/full/DSC_0090.avif', exif: { ...defaultExif, camera: 'Nikon Z 8', lens: 'NIKKOR Z 24-120mm f/4 S', date: '2025/03/22 16:32:50.80', focalLength: '46mm', mode: 'M', iso: '400', shutter: '1/125秒(電子快門)', aperture: '4', ev: '0 EV', focusMode: 'AF-C', focusPriority: '對焦', afArea: '自動區域 AF', adl: '自動', metering: '矩陣測光', wb: 'Auto0, 0, 0 (6280K)', skinSoftening: '標準', pib: '關閉', flash: '---' } },
+              { isVertical: true, thumb: './images/thumb/DSC_4563.avif', full: './images/full/DSC_4563.avif', exif: { ...defaultExif, camera: 'Nikon Z 8', lens: 'NIKKOR Z 100-400mm f/4.5-5.6 VR S', date: '2025/10/03 16:36:14.35', focalLength: '400mm', mode: 'M', iso: '---', shutter: '1/1600秒', aperture: '5.6', ev: '0 EV', focusMode: '---', focusPriority: '對焦', afArea: '---', adl: '---', metering: '矩陣測光', wb: '---', skinSoftening: '---', pib: '---', flash: '---' } }
+            ]
+          },
+          {
+            id: 'PH_WarmCine',
+            name: 'WarmCine',
+            icon: <Sunset className="w-5 h-5" />,
+            style: '暖陽逆光柔焦電影',
+            scenes: ['街拍', '人像', '風景', '美食'],
+            themeColor: 'rgba(217, 119, 6, 0.3)',
+            desc: '極致的明暗切割、濃郁的夕陽暖調以及邊緣發光的柔焦感。適合長廊、隧道等強烈側逆光場景。',
+            camera: { metering: '高光偏重測光', wb: '6500K~7000K (極致夕陽金黃)', adl: '關閉 或 低', ev: '視情況調整，死守光斑細節', pib: '亮度軸 +0.5' },
+            cameraTips: {
+              z8: 'Z8 極佳的動態範圍能完美保留夕陽高光，可嘗試更極端的逆光角度。建議將「人像印象平衡」指派至 Fn1，方便在強光下單手微調膚色亮度。',
+              zf: '利用機頂實體 EV 轉盤隨時盲操微調曝光，不需頻繁觀看螢幕，維持街拍節奏以確保光斑與剪影的完美平衡。'
+            },
+            zfGrain: { amount: '低', size: '粗' },
+            curve: [ { point: '純黑點', in: 0, out: 15 }, { point: '陰影區', in: 60, out: 40 }, { point: '中間調', in: 128, out: 120 }, { point: '亮部區', in: 190, out: 195 }, { point: '純白點', in: 255, out: 240 } ],
+            details: { clarity: '-1.50', mid: '+0.50', sharp: '+0.50', quick: '0.00' },
+            gallery: [
+              { isVertical: true, thumb: './images/thumb/DSC_0934.avif', full: './images/full/DSC_0934.avif', exif: { ...defaultExif, camera: 'Nikon Z f', lens: 'NIKKOR Z 40mm f/2', date: '2026/04/19 10:53:27.60', focalLength: '40mm', mode: 'M', iso: '400', shutter: '1/1000秒(自動)', aperture: '4', ev: '+2.7 EV', focusMode: 'AF-C', focusPriority: '對焦', afArea: '自動區域 AF', adl: '低', metering: '高光偏重', wb: '色溫(5500K), 0, 0 (5500K)', skinSoftening: '關閉', pib: '關閉', flash: '---' } },
+              { isVertical: true, thumb: './images/thumb/DSC_0025.avif', full: './images/full/DSC_0025.avif', exif: { ...defaultExif, camera: 'Nikon Z f', lens: 'NIKKOR Z 40mm f/2', date: '2025/12/14 14:39:55.93', focalLength: '40mm', mode: 'M', iso: '200', shutter: '1/30秒(自動)', aperture: '3.2', ev: '0 EV', focusMode: 'AF-S', focusPriority: '對焦', afArea: '廣闊區域 AF(小)', adl: '自動', metering: '偏重中央測光', wb: 'Auto0, 0, 0 (4640K)', skinSoftening: '關閉', pib: '關閉', flash: '---' } },
+              { thumb: './images/thumb/DSC_4665.avif', full: './images/full/DSC_4665.avif', exif: { ...defaultExif, camera: 'Nikon Z 8', lens: 'NIKKOR Z 20mm f/1.8 S', date: '2025/10/17 13:29:21.52', focalLength: '20mm', mode: 'M', iso: '200', shutter: '1/200秒(電子快門)', aperture: '4', ev: '0 EV', focusMode: 'AF-S', focusPriority: '對焦', afArea: '自動區域 AF', adl: '標準', metering: '矩陣測光', wb: '色溫(3920K), 0, M1.00 (3920K)', skinSoftening: '關閉', pib: '關閉', flash: '---' } },
+              { isVertical: true, thumb: './images/thumb/DSC_0281.avif', full: './images/full/DSC_0281.avif', exif: { ...defaultExif, camera: 'Nikon Z f', lens: 'NIKKOR Z 26mm f/2.8', date: '2026/01/14 07:58:43.51', focalLength: '26mm', mode: 'M', iso: '100', shutter: '1/1000秒(自動)', aperture: '2.8', ev: '0 EV', focusMode: 'AF-S', focusPriority: '對焦', afArea: '廣闊區域 AF(大)', adl: '關閉', metering: '重點測光', wb: 'Auto0, 0, 0 (5100K)', skinSoftening: '關閉', pib: '關閉', flash: '---' } }
+            ]
+          },
+          {
+            id: 'PH_BlackWhite',
+            name: 'BlackWhite',
+            icon: <Contrast className="w-5 h-5" />,
+            style: '極致幾何黑白',
+            scenes: ['建築', '街拍', '風景'],
+            themeColor: 'rgba(156, 163, 175, 0.15)',
+            desc: '極端反差與剪影，抽離所有色彩的純粹單色世界，帶有強烈建築結構張力。',
+            camera: { metering: '高光偏重測光', wb: '自動 (調整可改變濾鏡灰階)', adl: '關閉 (重要)', ev: '視情況調整，保護反光', pib: '不適用 (單色判定)' },
+            cameraTips: {
+              z8: 'Z8 豐富的 RAW 檔寬容度能讓這組高反差單色在亮暗部保有驚人潛力，可利用電子觀景窗 (EVF) 即時確認剪影的純淨度。',
+              zf: '🔥 終極玩法：將 Zf 頂部的 B&W 黑白撥桿之中的「深色調單色」或自訂欄位直接對應此配方，一秒進入極致純粹的幾何世界！'
+            },
+            zfGrain: { amount: '高', size: '粗' },
+            curve: [ { point: '純黑點', in: 0, out: 0 }, { point: '陰影區', in: 60, out: 30 }, { point: '中間調', in: 128, out: 120 }, { point: '亮部區', in: 190, out: 200 }, { point: '純白點', in: 255, out: 245 } ],
+            details: { clarity: '+3.00', mid: '+2.00', sharp: '+1.50', quick: '0.00' },
+            gallery: [
+              { isVertical: true, thumb: './images/thumb/DSC_0021.avif', full: './images/full/DSC_0021.avif', exif: { ...defaultExif, camera: 'Nikon Z f', lens: 'NIKKOR Z 40mm f/2', date: '2025/12/14 10:51:05.92', focalLength: '40mm', mode: 'M', iso: '100', shutter: '1/2 秒(自動)', aperture: '16', ev: '0 EV', focusMode: 'AF-S', focusPriority: '對焦', afArea: '廣闊區域 AF(小)', adl: '自動', metering: '偏重中央測光', wb: 'Auto0, 0, 0 (5320K)', skinSoftening: '關閉', pib: '關閉', flash: '---' } },
+              { thumb: './images/thumb/DSC_0011.avif', full: './images/full/DSC_0011.avif', exif: { ...defaultExif, camera: 'Nikon Z f', lens: 'NIKKOR Z 40mm f/2', date: '2025/12/13 14:32:08.71', focalLength: '40mm', mode: 'M', iso: '400', shutter: '1/125秒(自動)', aperture: '2.8', ev: '0 EV', focusMode: 'AF-S', focusPriority: '對焦', afArea: '廣闊區域 AF(小)', adl: '自動', metering: '偏重中央測光', wb: 'Auto0, 0, 0 (5530K)', skinSoftening: '關閉', pib: '關閉', flash: '---' } },
+              { isVertical: true, thumb: './images/thumb/DSC_4674.avif', full: './images/full/DSC_4674.avif', exif: { ...defaultExif, camera: 'Nikon Z 8', lens: 'NIKKOR Z 20mm f/1.8 S', date: '2025/10/17 13:33:09.14', focalLength: '20mm', mode: 'M', iso: '400', shutter: '1/40秒(電子快門)', aperture: '1.8', ev: '0 EV', focusMode: 'AF-S', focusPriority: '對焦', afArea: '自動區域 AF', adl: '標準', metering: '矩陣測光', wb: '色溫(3920K), 0, M1.00 (3920K)', skinSoftening: '關閉', pib: '關閉', flash: '---' } }
+            ]
+          }
+        ];
+
+        // --- 燈箱專屬 EXIF 顯示元件 ---
+        const ExifOverlay = ({ exif }) => {
+          if (!exif) return null;
+          
+          const ExifRow = ({ label, value }) => (
+            <div className="flex justify-between items-center text-sm py-1.5">
+              <span className="text-zinc-400 font-light tracking-widest">{label}</span>
+              <span className="text-white font-bold">{value}</span>
+            </div>
+          );
+
+          return (
+            <div 
+              className="absolute top-0 left-0 right-0 md:bottom-0 md:left-auto md:w-[480px] md:h-full max-h-[85vh] md:max-h-none bg-[#111111]/95 backdrop-blur-2xl border-b md:border-b-0 md:border-l border-white/10 p-6 md:p-8 pt-24 md:pt-8 pb-8 rounded-b-3xl md:rounded-none overflow-y-auto animate-in slide-in-from-top md:slide-in-from-right duration-300 shadow-[0_10px_40px_rgba(0,0,0,0.5)] md:shadow-2xl z-40 custom-scrollbar" 
+              onClick={e => e.stopPropagation()}
+            >
+              <h3 className="text-xl font-bold text-white mb-6 tracking-widest flex items-center gap-3">
+                拍攝資訊
+              </h3>
+
+              {/* 頂部相機與鏡頭卡片 */}
+              <div className="bg-[#1A1A1A] rounded-2xl p-5 mb-8 border border-white/5 shadow-inner">
+                <div className="flex flex-col gap-4">
+                  {/* Top Row: Camera & Lens */}
+                  <div className="flex flex-wrap items-center gap-x-8 gap-y-4 pb-5 border-b border-white/5">
+                    <div className="flex items-center gap-3 min-w-[140px]">
+                       <FilledCameraIcon className="w-8 h-8 text-zinc-500" />
+                       <span className="text-white font-bold text-lg whitespace-nowrap">{exif.camera}</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                       <FilledLensIcon className="w-8 h-8 text-zinc-500" />
+                       <span className="text-white font-bold text-lg whitespace-nowrap">{exif.lens}</span>
+                    </div>
+                  </div>
+                  {/* Bottom Row: Date & Focal Length */}
+                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-10 pt-1">
+                     <div className="flex items-center gap-3">
+                       <span className="text-zinc-400 text-sm tracking-widest">拍攝日期：</span>
+                       <span className="text-white font-medium text-sm">{exif.date}</span>
+                     </div>
+                     <div className="flex items-center gap-3">
+                       <span className="text-zinc-400 text-sm tracking-widest">焦距：</span>
+                       <span className="text-white font-medium text-sm">{exif.focalLength}</span>
+                     </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-x-10 gap-y-6">
+                {/* 左欄資訊 */}
+                <div className="space-y-2">
+                  <ExifRow label="數位可變程式" value={exif.mode} />
+                  <ExifRow label="ISO 感光度" value={exif.iso} />
+                  <ExifRow label="快門速度" value={exif.shutter} />
+                  <ExifRow label="光圈" value={exif.aperture} />
+                  <ExifRow label="曝光補償" value={exif.ev} />
+                  
+                  <div className="pt-5 pb-2">
+                    <div className="text-zinc-400 text-sm mb-3 font-light tracking-widest">AF 設定</div>
+                    <div className="pl-5 border-l border-white/10 space-y-2">
+                      <ExifRow label="對焦模式" value={exif.focusMode} />
+                      <ExifRow label="AF 優先" value={exif.focusPriority} />
+                      <ExifRow label="AF 區域模式" value={exif.afArea} />
+                    </div>
+                  </div>
+                </div>
+                
+                {/* 右欄資訊 */}
+                <div className="space-y-2 md:pt-6 md:border-t md:border-white/10">
+                  <ExifRow label="主動式 D-Lighting" value={exif.adl} />
+                  <ExifRow label="測光" value={exif.metering} />
+                  <ExifRow label="白平衡" value={exif.wb} />
+                  <ExifRow label="柔化肌膚" value={exif.skinSoftening} />
+                  <ExifRow label="人像印象平衡" value={exif.pib} />
+                  <ExifRow label="閃光" value={exif.flash} />
+                </div>
+              </div>
+            </div>
+          );
+        };
+
+        // --- 漸進式載入圖片元件 (終極乾淨修復版) ---
+        const ProgressiveImage = ({ src, alt, className, wrapperClass }) => {
+          const [isLoaded, setIsLoaded] = useState(false);
+          const [hasError, setHasError] = useState(false);
+          const imgRef = useRef(null);
+
+          // 檢查圖片是否已經被瀏覽器快取秒殺載入
+          useEffect(() => {
+            if (imgRef.current && imgRef.current.complete) {
+              if (imgRef.current.naturalWidth === 0) setHasError(true);
+              setIsLoaded(true);
+            }
+          }, [src]);
+
+          const finalWrapperClass = wrapperClass ? wrapperClass : "absolute inset-0";
+
+          return (
+            <div className={`${finalWrapperClass} overflow-hidden bg-[#1A1A1A]`}>
+              {!isLoaded && !hasError && (
+                <div className="absolute inset-0 animate-pulse bg-[#222]"></div>
+              )}
+              {hasError && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#111] p-4 z-50 text-center">
+                  <AlertTriangle className="w-6 h-6 text-red-500 mb-2" />
+                  <span className="text-red-500 text-xs font-bold mb-1">圖片載入失敗</span>
+                  <span className="text-zinc-500 text-[9px] break-all">{src}</span>
+                </div>
+              )}
+              <img 
+                ref={imgRef}
+                src={src} 
+                alt={alt}
+                loading="lazy"
+                onLoad={() => setIsLoaded(true)}
+                onError={() => {
+                  setIsLoaded(true);
+                  setHasError(true);
+                }}
+                className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out ${
+                  isLoaded && !hasError ? 'opacity-100 blur-0 scale-100' : 'opacity-0 blur-md scale-105'
+                } ${className || ''}`}
+              />
+            </div>
+          );
+        };
+
+        // --- 許願池專屬的非同步 Formspree 表單元件 ---
+        const WaitlistForm = ({ profileName }) => {
+          const [email, setEmail] = useState('');
+          const [status, setStatus] = useState('idle'); // idle, loading, success, error
+
+          const handleSubmit = async (e) => {
+            e.preventDefault();
+            setStatus('loading');
+            
+            // 打包要傳送的資料
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('許願配方', profileName);
+            formData.append('_subject', `有人許願了 ${profileName} 的原始檔！`);
+
+            try {
+              // ⚠️⚠️⚠️ 注意！請將下方的 YOUR_FORMSPREE_ID 換成你申請到的真實 ID ⚠️⚠️⚠️
+              const response = await fetch("https://formspree.io/f/maqalllg", {
+                method: "POST",
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+              });
+              
+              if (response.ok) {
+                setStatus('success');
+                setEmail('');
+              } else {
+                setStatus('error');
+              }
+            } catch (error) {
+              setStatus('error');
+            }
+          };
+
+          if (status === 'success') {
+            return (
+              <div className="flex items-center gap-2 text-green-400 bg-green-400/10 px-6 py-4 rounded-xl border border-green-400/20 text-sm tracking-widest font-bold animate-in fade-in zoom-in-95 duration-500 w-full justify-center">
+                <Check className="w-5 h-5" /> 謝謝你的回饋！
+              </div>
+            );
+          }
+
+          return (
+            <div className="w-full flex flex-col items-center">
+              <form onSubmit={handleSubmit} className="w-full flex flex-col sm:flex-row gap-3">
+                <input 
+                  type="email" 
+                  required 
+                  placeholder="輸入您的 Email..." 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="flex-1 min-w-[240px] bg-[#111] border border-white/20 rounded-xl px-4 py-3 text-white placeholder-zinc-500 focus:outline-none focus:border-[#FFE100]/50 transition-colors tracking-wide"
+                />
+                <button 
+                  type="submit" 
+                  disabled={status === 'loading'}
+                  className="flex items-center justify-center gap-2 bg-[#FFE100] text-black px-6 py-3 rounded-xl font-bold tracking-widest hover:bg-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shrink-0 shadow-[0_10px_20px_rgba(255,225,0,0.15)] hover:shadow-[0_10px_25px_rgba(255,255,255,0.25)]"
+                >
+                  {status === 'loading' ? '傳送中...' : <><Bell className="w-4 h-4" /> 敲碗通知</>}
+                </button>
+              </form>
+              {status === 'error' && (
+                <div className="text-red-500 text-xs mt-2 w-full text-center">傳送失敗，請確認您的 ID 參數或網路連線。</div>
+              )}
+            </div>
+          );
+        };
+        
+        const App = () => {
+          const [activeProfile, setActiveProfile] = useState(null);
+          const [showTroubleshoot, setShowTroubleshoot] = useState(false);
+          const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+          const [copied, setCopied] = useState(false);
+
+          // 建立捲軸控制的參考點
+          const scrollRef = useRef(null);
+
+          // 實景範例 Lightbox 與 EXIF 狀態
+          const [lightboxData, setLightboxData] = useState(null);
+          const [showExif, setShowExif] = useState(false);
+
+          const [activeFilter, setActiveFilter] = useState('全部');
+          const allScenes = ['全部', ...Array.from(new Set(profiles.flatMap(p => p.scenes)))];
+
+          // --- 收集所有照片以產生全域相片牆 (完美 CSS 瀑布流交錯演算法) ---
+          const allPhotos = useMemo(() => {
+            let photos = profiles.flatMap(profile => 
+              (profile.gallery || []).map(photo => ({
+                ...photo,
+                profileName: profile.name,
+                profileId: profile.id
+              }))
+            );
+            
+            for (let i = photos.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [photos[i], photos[j]] = [photos[j], photos[i]];
+            }
+
+            const verticalPhotos = photos.filter(p => p.isVertical);
+            const horizontalPhotos = photos.filter(p => !p.isVertical);
+
+            const cols = [[], [], []];
+            const colHeights = [0, 0, 0]; 
+            
+            let vIdx = 0;
+            let hIdx = 0;
+            const total = photos.length;
+
+            for (let i = 0; i < total; i++) {
+              let minCol = 0;
+              for (let c = 1; c < 3; c++) {
+                if (colHeights[c] < colHeights[minCol]) minCol = c;
+              }
+
+              const rowIdx = cols[minCol].length;
+              const wantH = (minCol + rowIdx) % 2 === 0;
+
+              let selectedPhoto = null;
+              let addedHeight = 0;
+
+              if (wantH && hIdx < horizontalPhotos.length) {
+                selectedPhoto = horizontalPhotos[hIdx++];
+                addedHeight = 1; 
+              } else if (!wantH && vIdx < verticalPhotos.length) {
+                selectedPhoto = verticalPhotos[vIdx++];
+                addedHeight = 2; 
+              } else if (hIdx < horizontalPhotos.length) {
+                selectedPhoto = horizontalPhotos[hIdx++];
+                addedHeight = 1;
+              } else if (vIdx < verticalPhotos.length) {
+                selectedPhoto = verticalPhotos[vIdx++];
+                addedHeight = 2;
+              }
+
+              if (selectedPhoto) {
+                cols[minCol].push(selectedPhoto);
+                colHeights[minCol] += addedHeight;
+              }
+            }
+
+            return [...cols[0], ...cols[1], ...cols[2]];
+          }, []);
+
+          // --- 單一配方內頁的相片牆交錯演算法 (2欄版) ---
+          const profilePhotos = useMemo(() => {
+            if (!activeProfile || !activeProfile.gallery) return [];
+            
+            const photos = [...activeProfile.gallery];
+            const verticalPhotos = photos.filter(p => p.isVertical);
+            const horizontalPhotos = photos.filter(p => !p.isVertical);
+
+            const cols = [[], []];
+            const colHeights = [0, 0];
+            
+            let vIdx = 0;
+            let hIdx = 0;
+            const total = photos.length;
+
+            for (let i = 0; i < total; i++) {
+              let minCol = colHeights[0] <= colHeights[1] ? 0 : 1;
+              const rowIdx = cols[minCol].length;
+              const wantH = (minCol + rowIdx) % 2 === 0;
+
+              let selectedPhoto = null;
+              let addedHeight = 0;
+
+              if (wantH && hIdx < horizontalPhotos.length) {
+                selectedPhoto = horizontalPhotos[hIdx++];
+                addedHeight = 1;
+              } else if (!wantH && vIdx < verticalPhotos.length) {
+                selectedPhoto = verticalPhotos[vIdx++];
+                addedHeight = 2;
+              } else if (hIdx < horizontalPhotos.length) {
+                selectedPhoto = horizontalPhotos[hIdx++];
+                addedHeight = 1;
+              } else if (vIdx < verticalPhotos.length) {
+                selectedPhoto = verticalPhotos[vIdx++];
+                addedHeight = 2;
+              }
+
+              if (selectedPhoto) {
+                cols[minCol].push(selectedPhoto);
+                colHeights[minCol] += addedHeight;
+              }
+            }
+
+            return [...cols[0], ...cols[1]];
+          }, [activeProfile]);
+
+          const safeUpdateURL = (hashValue) => {
+            try {
+              if (window.location.protocol === 'blob:' || window.location.protocol === 'data:') return;
+              if (hashValue === null) {
+                window.history.pushState('', document.title, window.location.pathname + window.location.search);
+              } else {
+                window.location.hash = hashValue;
+              }
+            } catch (error) {}
+          };
+
+          useEffect(() => {
+            const handleHashChange = () => {
+              try {
+                const hash = window.location.hash.replace('#', '');
+                if (hash === 'troubleshoot') {
+                  setShowTroubleshoot(true);
+                  setActiveProfile(null);
+                } else if (hash) {
+                  const profile = profiles.find(p => p.id === hash);
+                  if (profile) {
+                    setActiveProfile(profile);
+                    setShowTroubleshoot(false);
+                  }
+                } else {
+                  setActiveProfile(null);
+                  setShowTroubleshoot(false);
+                }
+              } catch (error) {}
+            };
+
+            handleHashChange();
+            window.addEventListener('hashchange', handleHashChange);
+            return () => window.removeEventListener('hashchange', handleHashChange);
+          }, []);
+
+          // --- 解決換頁沒有回到最上方的問題 ---
+          useEffect(() => {
+            if (scrollRef.current) {
+              scrollRef.current.scrollTop = 0;
+            }
+          }, [activeProfile, showTroubleshoot, activeFilter]); 
+
+          const handleProfileSelect = (profile) => {
+            setActiveProfile(profile);
+            setShowTroubleshoot(false);
+            safeUpdateURL(profile.id);
+            setIsSidebarOpen(false);
+          };
+
+          const handleHomeSelect = () => {
+            setActiveProfile(null);
+            setShowTroubleshoot(false);
+            safeUpdateURL(null);
+            setIsSidebarOpen(false);
+          };
+
+          const handleTroubleshootSelect = () => {
+            setShowTroubleshoot(true);
+            setActiveProfile(null);
+            safeUpdateURL('troubleshoot');
+            setIsSidebarOpen(false);
+          };
+
+          const handleShare = () => {
+            const url = window.location.href;
+            const textArea = document.createElement("textarea");
+            textArea.value = url;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+              document.execCommand('copy');
+              setCopied(true);
+              setTimeout(() => setCopied(false), 2000);
+            } catch (err) {}
+            document.body.removeChild(textArea);
+          };
+
+          const filteredProfiles = activeFilter === '全部' 
+            ? profiles 
+            : profiles.filter(p => p.scenes.includes(activeFilter));
+
+          return (
+            <div className="flex h-screen bg-[#000000] text-zinc-300 font-sans selection:bg-[#FFE100] selection:text-black overflow-hidden relative">
+              
+              {/* 實景範例 Lightbox (包含 EXIF 面板) */}
+              {lightboxData && (
+                <div 
+                  className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-md animate-in fade-in duration-200" 
+                  onClick={() => { setLightboxData(null); setShowExif(false); }}
+                >
+                  {/* 右上角操作按鈕 (Info & Close) */}
+                  <div className="absolute top-6 right-6 flex items-center gap-4 z-50">
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); setShowExif(!showExif); }} 
+                      className={`p-2.5 rounded-full backdrop-blur-md transition-all duration-300 ${showExif ? 'bg-white text-black' : 'bg-black/50 text-white/70 hover:text-white hover:bg-black/80 border border-white/10'}`}
+                      title="顯示拍攝資訊"
+                    >
+                      <Info className="w-6 h-6" />
+                    </button>
+                    <button 
+                      onClick={() => { setLightboxData(null); setShowExif(false); }} 
+                      className="p-2.5 rounded-full bg-black/50 text-white/70 hover:text-white hover:bg-black/80 backdrop-blur-md border border-white/10 transition-colors"
+                      title="關閉"
+                    >
+                      <X className="w-6 h-6" />
+                    </button>
+                  </div>
+                  
+                  {/* 滿版圖片 */}
+                  <img 
+                    src={lightboxData.full} 
+                    alt="Gallery Enlarged" 
+                    className={`max-w-[95vw] max-h-[90vh] object-contain shadow-2xl rounded-sm transition-all duration-500 ${showExif ? 'md:max-w-[calc(95vw-480px)] md:mr-[480px]' : ''}`}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+
+                  {/* 滑出的 EXIF 資訊面板 */}
+                  {showExif && <ExifOverlay exif={lightboxData.exif} />}
+                </div>
+              )}
+
+              {/* 科技感快門與觀景窗線條背景 */}
+              <div className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center overflow-hidden opacity-[0.03]">
+                <svg viewBox="0 0 1000 1000" className="w-[150vw] h-[150vw] max-w-[1200px] max-h-[1200px] text-white" fill="none" stroke="currentColor">
+                  <line x1="333" y1="0" x2="333" y2="1000" strokeWidth="1" strokeDasharray="4 4" />
+                  <line x1="666" y1="0" x2="666" y2="1000" strokeWidth="1" strokeDasharray="4 4" />
+                  <line x1="0" y1="333" x2="1000" y2="333" strokeWidth="1" strokeDasharray="4 4" />
+                  <line x1="0" y1="666" x2="1000" y2="666" strokeWidth="1" strokeDasharray="4 4" />
+                  <circle cx="500" cy="500" r="450" strokeWidth="1" />
+                  <circle cx="500" cy="500" r="430" strokeWidth="2" strokeDasharray="2 10" />
+                  <circle cx="500" cy="500" r="300" strokeWidth="1" />
+                  <polygon points="500,200 760,350 760,650 500,800 240,650 240,350" strokeWidth="2" />
+                  <line x1="500" y1="200" x2="1000" y2="200" strokeWidth="1.5" />
+                  <line x1="760" y1="350" x2="933" y2="0" strokeWidth="1.5" />
+                  <line x1="760" y1="650" x2="1000" y2="850" strokeWidth="1.5" />
+                  <line x1="500" y1="800" x2="0" y2="800" strokeWidth="1.5" />
+                  <line x1="240" y1="650" x2="67" y2="1000" strokeWidth="1.5" />
+                  <line x1="240" y1="350" x2="0" y2="150" strokeWidth="1.5" />
+                  <path d="M480 500 L520 500 M500 480 L500 520" stroke="#FFE100" strokeWidth="3" />
+                  <path d="M450 450 L430 450 L430 470 M550 450 L570 450 L570 470 M450 550 L430 550 L430 530 M550 550 L570 550 L570 530" strokeWidth="2" />
+                  <circle cx="500" cy="500" r="150" strokeWidth="1" strokeDasharray="10 20" />
+                </svg>
+              </div>
+
+              {/* 沉浸式 Z 浮水印背景 */}
+              <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0 opacity-5">
+                <ZLogo className="w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] text-white" />
+              </div>
+
+              {/* Mobile Sidebar Overlay */}
+              {isSidebarOpen && (
+                <div 
+                  className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 md:hidden"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+              )}
+
+              {/* Sidebar Navigation */}
+              <aside className={`
+                fixed inset-y-0 left-0 z-50 w-[85%] max-w-[320px] bg-[#0A0A0A] border-r border-white/10 flex flex-col shrink-0
+                transition-transform duration-300 ease-in-out
+                md:relative md:translate-x-0 md:w-80
+                ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+              `}>
+                <div className="p-6 pb-5 border-b border-white/10 relative">
+                  <button onClick={() => setIsSidebarOpen(false)} className="md:hidden absolute top-6 right-6 text-zinc-500 hover:text-white transition-colors">
+                    <X className="w-6 h-6" />
+                  </button>
+
+                  <button 
+                    onClick={handleHomeSelect} 
+                    className="flex flex-col items-start focus:outline-none group text-left w-full"
+                    title="回首頁"
+                  >
+                    <div className="flex items-center gap-3 mb-1.5 mt-2">
+                      <div className="bg-[#FFE100] px-2 py-0.5 group-hover:bg-white transition-colors duration-300">
+                        <span className="text-black font-black text-xl tracking-widest italic" style={{ fontFamily: 'Arial Black, Impact, sans-serif' }}>Nikon</span>
+                      </div>
+                      <h1 className="text-xl font-light tracking-widest uppercase text-white flex items-center gap-2">
+                        <ZLogo className="w-6 h-6 shrink-0 text-[#FFE100] group-hover:text-white transition-colors duration-300" />
+                      </h1>
+                    </div>
+                    <p className="text-xs text-zinc-500 tracking-wide mt-2 group-hover:text-zinc-300 transition-colors duration-300">
+                      Nikon Z 成像配方
+                    </p>
+                  </button>
+                </div>
+                
+                <div className="flex-1 overflow-y-auto py-4 custom-scrollbar flex flex-col gap-1 px-4 relative z-10">
+                  <button
+                    onClick={handleHomeSelect}
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 mb-2 ${
+                      activeProfile === null && !showTroubleshoot ? 'bg-[#1a1a1a] border border-[#FFE100]/30 text-white font-medium' : 'text-zinc-500 hover:text-white hover:bg-[#111111] border border-transparent'
+                    }`}
+                  >
+                    <Grid className={`w-4 h-4 ${activeProfile === null && !showTroubleshoot ? 'text-[#FFE100]' : ''}`} />
+                    <span className="tracking-widest text-sm">首頁總覽</span>
+                  </button>
+
+                  <div className="text-[10px] text-zinc-600 font-medium tracking-widest uppercase mb-2 mt-2 px-2">Imaging Recipes</div>
+
+                  {profiles.map(profile => (
+                    <button
+                      key={profile.id}
+                      onClick={() => handleProfileSelect(profile)}
+                      className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-lg text-left transition-all duration-200 group ${
+                        activeProfile?.id === profile.id && !showTroubleshoot ? 'bg-[#141414] border border-[#FFE100]/30' : 'border border-transparent hover:bg-[#111111]'
+                      }`}
+                    >
+                      <div className={`${activeProfile?.id === profile.id && !showTroubleshoot ? 'text-[#FFE100]' : 'text-zinc-600 group-hover:text-zinc-400 transition-colors'}`}>
+                        {profile.icon}
+                      </div>
+                      <div className="flex-1 overflow-hidden">
+                        <div className={`font-mono text-sm tracking-wide break-words whitespace-normal leading-tight ${activeProfile?.id === profile.id && !showTroubleshoot ? 'text-white font-semibold' : 'text-zinc-400'}`}>
+                          {profile.name}
+                        </div>
+                        <div className="text-[11px] text-zinc-500 mt-1 whitespace-normal">{profile.style}</div>
+                      </div>
+                      {activeProfile?.id === profile.id && !showTroubleshoot && (
+                        <ChevronRight className="w-4 h-4 text-[#FFE100] opacity-80" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="p-5 border-t border-white/10 bg-[#0A0A0A] relative z-10">
+                  <button
+                    onClick={handleTroubleshootSelect}
+                    className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-sm transition-all duration-200 tracking-wide ${
+                      showTroubleshoot ? 'bg-[#FFE100] text-black font-bold shadow-[0_0_15px_rgba(255,225,0,0.3)]' : 'bg-[#111111] text-zinc-400 border border-white/10 hover:text-white hover:bg-[#1A1A1A]'
+                    }`}
+                  >
+                    <Lightbulb className={`w-4 h-4 ${showTroubleshoot ? '' : 'opacity-70'}`} />
+                    實戰Tips
+                  </button>
+                </div>
+              </aside>
+
+              <main className="flex-1 flex flex-col h-screen overflow-hidden relative z-10">
+                
+                <div className="md:hidden shrink-0 flex flex-col border-b border-white/10 bg-[#0A0A0A] z-40 relative shadow-md">
+                  <div className="flex items-center justify-between p-4">
+                    <button 
+                      onClick={handleHomeSelect} 
+                      className="flex items-center gap-2 focus:outline-none group"
+                    >
+                      <div className="bg-[#FFE100] px-1.5 py-0.5 group-hover:bg-white transition-colors duration-300">
+                        <span className="text-black font-black text-sm tracking-widest italic" style={{ fontFamily: 'Arial Black, Impact, sans-serif' }}>Nikon</span>
+                      </div>
+                      <span className="text-sm font-light tracking-widest uppercase text-white flex items-center gap-1.5">
+                        <ZLogo className="h-[18px] w-auto shrink-0 text-[#FFE100] group-hover:text-white transition-colors duration-300 mt-0.5" />
+                      </span>
+                    </button>
+                    <button onClick={() => setIsSidebarOpen(true)} className="text-zinc-400 hover:text-white p-1.5 transition-colors">
+                      <Menu className="w-6 h-6" />
+                    </button>
+                  </div>
+                </div>
+
+                <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 md:p-12 scroll-smooth custom-scrollbar">
+                  {showTroubleshoot ? (
+                    <div className="max-w-5xl mx-auto animate-in fade-in duration-500 pb-12">
+                      <div className="bg-[#0A0A0A]/90 backdrop-blur-sm rounded-xl p-8 md:p-10 border border-white/10">
+                        <div className="flex items-center gap-4 mb-8 md:pr-80">
+                          <div className="w-10 h-10 bg-[#FFE100] rounded-lg flex items-center justify-center text-black">
+                            <Lightbulb className="w-5 h-5" />
+                          </div>
+                          <h2 className="text-2xl md:text-3xl font-light text-white tracking-widest">實戰Tips</h2>
+                        </div>
+                        <p className="text-zinc-400 leading-relaxed mb-12 text-sm tracking-wide md:pr-80">
+                          專為 Nikon Z 系列打造的進階實戰指南。從 Z8 旗艦效能到 Zf 復古盲操，並完整解析「測光模式」、「曝光補償」與「人像印象平衡 (PIB)」的黃金運用邏輯，助您精準掌握光影與色彩。
+                        </p>
+
+                        <div className="space-y-6">
+                          <div className="flex flex-col md:flex-row bg-[#111111] rounded-xl overflow-hidden border border-white/5 group hover:border-white/10 transition-colors">
+                            <div className="md:w-1/3 relative bg-[#1A1A1A] flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-white/5 group-hover:bg-[#1C1C1C] transition-colors">
+                              <Z8DetailedSvg className="w-full max-w-[200px] h-auto drop-shadow-[0_20px_30px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-105 relative z-10" />
+                            </div>
+                            <div className="p-8 md:w-2/3 flex flex-col justify-center">
+                              <h3 className="text-lg font-light text-white mb-6 flex items-center gap-3 tracking-widest uppercase">
+                                <span className="text-[#FFE100] font-bold flex items-center gap-1 normal-case"><ZLogo className="w-4 h-4 shrink-0"/>8</span>
+                                旗艦機身優化
+                              </h3>
+                              <ul className="space-y-6 text-sm text-zinc-400 tracking-wide">
+                                <li className="flex gap-4">
+                                  <Zap className="w-4 h-4 text-[#FFE100] shrink-0 mt-0.5" />
+                                  <p className="leading-relaxed"><strong className="text-zinc-200 font-medium">快捷鍵指派：</strong> 強烈建議將鏡頭旁的 <code className="bg-[#222] px-1.5 py-0.5 rounded text-zinc-300">Fn1</code> 或 <code className="bg-[#222] px-1.5 py-0.5 rounded text-zinc-300">Fn2</code> 指派為「人像印象平衡 (PIB)」。在套用配方拍攝人像時，能一鍵叫出選單即時微調膚色亮度。</p>
+                                </li>
+                                <li className="flex gap-4">
+                                  <Zap className="w-4 h-4 text-[#FFE100] shrink-0 mt-0.5" />
+                                  <p className="leading-relaxed"><strong className="text-zinc-200 font-medium">高光偏重測光：</strong> 針對高反差配方，可利用 Z8 的自訂控制環快速切換至「高光偏重測光」，死守高光，把暗部交給 Z8 的優異寬容度。</p>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-col md:flex-row bg-[#111111] rounded-xl overflow-hidden border border-white/5 group hover:border-white/10 transition-colors">
+                            <div className="md:w-1/3 relative bg-[#1A1A1A] flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-white/5 group-hover:bg-[#1C1C1C] transition-colors">
+                              <ZfDetailedSvg className="w-full max-w-[210px] h-auto drop-shadow-[0_20px_30px_rgba(0,0,0,0.8)] transition-transform duration-500 group-hover:scale-105 relative z-10" />
+                            </div>
+                            <div className="p-8 md:w-2/3 flex flex-col justify-center">
+                              <h3 className="text-lg font-light text-white mb-6 flex items-center gap-3 tracking-widest uppercase">
+                                <span className="text-[#FFE100] font-bold flex items-center gap-1 normal-case"><ZLogo className="w-4 h-4 shrink-0"/>f</span>
+                                復古盲操美學
+                              </h3>
+                              <ul className="space-y-6 text-sm text-zinc-400 tracking-wide">
+                                <li className="flex gap-4">
+                                  <Aperture className="w-4 h-4 text-[#FFE100] shrink-0 mt-0.5" />
+                                  <p className="leading-relaxed"><strong className="text-zinc-200 font-medium">專屬撥桿綁定：</strong> 將機頂的 B&W 撥桿直接連動到 <code className="bg-[#222] px-1.5 py-0.5 rounded text-zinc-300">PH_BlackWhite</code> 配方！街拍時只要拇指一撥，瞬間進入充滿結構張力的純粹幾何黑白世界。</p>
+                                </li>
+                                <li className="flex gap-4">
+                                  <Aperture className="w-4 h-4 text-[#FFE100] shrink-0 mt-0.5" />
+                                  <p className="leading-relaxed"><strong className="text-zinc-200 font-medium">實體轉盤介入：</strong> 套用日系配方需要強制提亮 (+0.7 EV) 時，請享受轉動實體黃銅轉盤的喀答聲，將注意力放回觀景窗內的構圖。</p>
+                                </li>
+                                <li className="flex gap-4">
+                                  <Film className="w-4 h-4 text-[#FFE100] shrink-0 mt-0.5" />
+                                  <p className="leading-relaxed"><strong className="text-zinc-200 font-medium">底片顆粒連動：</strong> Zf 獨有的「底片顆粒」設定能完美賦予照片銀鹽質感，本配方庫已針對所有風格提供對應的「顆粒量」與「粗細」最佳化參數。</p>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+
+                          <div className="pt-10 mt-10 border-t border-white/10">
+                            <h3 className="text-lg font-light text-white mb-8 tracking-widest uppercase flex items-center gap-3">
+                              <Sliders className="w-5 h-5 text-[#FFE100]" />
+                              測光與曝光補償實戰指南
+                            </h3>
+                            
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                              <div className="bg-[#111111] p-8 rounded-xl border border-white/5 hover:border-[#FFE100]/30 transition-colors">
+                                <h4 className="text-[#FFE100] font-bold tracking-wide mb-4 flex items-center gap-2">
+                                  <Aperture className="w-4 h-4" /> 測光模式運用
+                                </h4>
+                                <div className="space-y-5">
+                                  <div>
+                                    <div className="text-zinc-200 text-sm font-medium mb-1">矩陣測光 (Matrix Metering)</div>
+                                    <p className="text-xs text-zinc-500 leading-relaxed">全能大管家，適合 80% 的日常與順光場景。因為系統會平均計算全域亮度，最需要搭配「曝光補償 (EV)」來主動介入修正明暗。</p>
+                                  </div>
+                                  <div>
+                                    <div className="text-zinc-200 text-sm font-medium mb-1">偏重中央測光 (Center-Weighted Metering)</div>
+                                    <p className="text-xs text-zinc-500 leading-relaxed">經典主體先決。著重計算畫面中央區域的亮度，忽略邊緣極端光線的干擾。非常適合主體置中的人像特寫、街頭紀實，或是搭配復古手動老鏡時使用。</p>
+                                  </div>
+                                  <div>
+                                    <div className="text-zinc-200 text-sm font-medium mb-1">點測光 (Spot Metering)</div>
+                                    <p className="text-xs text-zinc-500 leading-relaxed">光影手術刀。針對極小區域測光並與對焦點連動，完全不理會背景亮度。極度適合逆光人像、舞台攝影或微距特寫。</p>
+                                  </div>
+                                  <div>
+                                    <div className="text-zinc-200 text-sm font-medium mb-1">高光偏重測光 (Highlight-weighted)</div>
+                                    <p className="text-xs text-zinc-500 leading-relaxed">保護高光不死白。適合高反差的城市光影、夕陽剪影 (如 PH_CityLight, PH_WarmCine)。暗部細節則交給 Z 系列強大的 RAW 檔寬容度處理。</p>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="bg-[#111111] p-8 rounded-xl border border-white/5 hover:border-[#FFE100]/30 transition-colors">
+                                <h4 className="text-[#FFE100] font-bold tracking-wide mb-4 flex items-center gap-2">
+                                  <Contrast className="w-4 h-4" /> 曝光補償 (EV) 秘訣
+                                </h4>
+                                <div className="space-y-5">
+                                  <div>
+                                    <div className="text-zinc-200 text-sm font-medium mb-1">白加黑減黃金法則</div>
+                                    <p className="text-xs text-zinc-500 leading-relaxed">相機測光總是傾向將畫面拍成「中性灰」。拍攝大面積白雪 (如 PH_BlueSky) 或白牆時，必須手動加 EV (+0.7~+1.3) 才能恢復潔白；拍攝大面積深色場景則需要減 EV 避免畫面發灰。</p>
+                                  </div>
+                                  <div>
+                                    <div className="text-zinc-200 text-sm font-medium mb-1">日系通透感的秘密</div>
+                                    <p className="text-xs text-zinc-500 leading-relaxed">套用日系清新配方 (如 PH_SoftPortrait、PH_KamakuraCyan) 時，無論測光給出什麼數值，習慣性地往上加 +0.3 到 +0.7 EV，這是消除畫面灰濁感、獲得空氣感的最快捷徑。</p>
+                                  </div>
+                                  <div>
+                                    <div className="text-zinc-200 text-sm font-medium mb-1">善用實體轉盤與 Fn 鍵</div>
+                                    <p className="text-xs text-zinc-500 leading-relaxed">Zf 用戶請直接轉動機頂黃銅 EV 轉盤享受盲操；Z8/Z9 用戶建議將鏡頭控制環或 Fn 鍵設為曝光補償，讓你的眼睛不用離開觀景窗即可控制光影。</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="pt-10 mt-10 border-t border-white/10">
+                            <h3 className="text-lg font-light text-white mb-8 tracking-widest uppercase flex items-center gap-3">
+                              <User className="w-5 h-5 text-[#FFE100]" />
+                              人像印象平衡 (PIB) 實戰應用
+                            </h3>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                              <div className="bg-[#111111] p-8 rounded-xl border border-white/5 hover:border-[#FFE100]/30 transition-colors flex flex-col h-full">
+                                <h4 className="text-white font-bold tracking-wide mb-2 flex items-center gap-2">🌸 日系通透白皙</h4>
+                                <div className="text-[#FFE100] font-mono text-xs mb-4 pb-4 border-b border-white/10">M-Y 軸: M +0.5 / 亮度: +0.5</div>
+                                <p className="text-xs text-zinc-500 leading-relaxed mb-6 flex-1">為亞洲人膚色注入微量的洋紅去黃，並同時提亮臉部，是創造「日系空氣感」與「白裡透紅」肌膚的最強萬用設定。</p>
+                                <div className="mt-auto">
+                                  <div className="text-[10px] text-zinc-600 uppercase tracking-widest mb-1.5">適用配方</div>
+                                  <div className="text-xs text-zinc-400 font-mono">SoftPortrait, OutdoorPortrait, UrbanFilm</div>
+                                </div>
+                              </div>
+
+                              <div className="bg-[#111111] p-8 rounded-xl border border-white/5 hover:border-[#FFE100]/30 transition-colors flex flex-col h-full">
+                                <h4 className="text-white font-bold tracking-wide mb-2 flex items-center gap-2">🎞️ 保留環境氛圍</h4>
+                                <div className="text-[#FFE100] font-mono text-xs mb-4 pb-4 border-b border-white/10">M-Y 軸: 0 / 亮度: +0.5</div>
+                                <p className="text-xs text-zinc-500 leading-relaxed mb-6 flex-1">在夕陽暖光或強烈的環境色中，若不想破壞光線對膚色的真實渲染，只需單純提亮臉部立體感，維持電影感氛圍。</p>
+                                <div className="mt-auto">
+                                  <div className="text-[10px] text-zinc-600 uppercase tracking-widest mb-1.5">適用配方</div>
+                                  <div className="text-xs text-zinc-400 font-mono">WarmCine, KamakuraCyan</div>
+                                </div>
+                              </div>
+
+                              <div className="bg-[#111111] p-8 rounded-xl border border-white/5 hover:border-[#FFE100]/30 transition-colors flex flex-col h-full">
+                                <h4 className="text-white font-bold tracking-wide mb-2 flex items-center gap-2">❄️ 冷調去黃校正</h4>
+                                <div className="text-[#FFE100] font-mono text-xs mb-4 pb-4 border-b border-white/10">M-Y 軸: M +0.5 / 亮度: 0</div>
+                                <p className="text-xs text-zinc-500 leading-relaxed mb-6 flex-1">在雪地或陰天等高色溫的冷藍色環境中，膚色容易顯得蠟黃。單純加入洋紅修正色偏，不額外提亮以免臉部死白。</p>
+                                <div className="mt-auto">
+                                  <div className="text-[10px] text-zinc-600 uppercase tracking-widest mb-1.5">適用配方</div>
+                                  <div className="text-xs text-zinc-400 font-mono">BlueSky</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <SiteFooter />
+                    </div>
+                  ) : !activeProfile ? (
+                    <div className="max-w-6xl mx-auto animate-in fade-in duration-500 pb-12">
+                      <header className="mb-8 border-b border-white/10 pb-10">
+                        <h2 className="text-3xl md:text-5xl font-light text-white tracking-widest mb-4 uppercase">
+                          Nikon Imaging <span className="font-black text-[#FFE100] italic">RECIPES</span>
+                        </h2>
+                        <p className="text-zinc-400 leading-relaxed max-w-2xl text-sm tracking-wide mb-8">
+                          探索 9 款專為 Nikon Z 系列與 NX Studio 打造的專屬靈活色彩成像配方。從日系空氣感、電影青橙到極致黑白，選擇一個配方以查看完整的相機設定與參數。
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {allScenes.map(scene => (
+                            <button
+                              key={scene}
+                              onClick={() => setActiveFilter(scene)}
+                              className={`px-4 py-1.5 rounded-full text-xs font-medium tracking-widest transition-all duration-300 ${
+                                activeFilter === scene 
+                                  ? 'bg-[#FFE100] text-black shadow-[0_0_15px_rgba(255,225,0,0.3)]' 
+                                  : 'bg-[#111111] text-zinc-400 border border-white/10 hover:text-white hover:border-[#FFE100]/30'
+                              }`}
+                            >
+                              {scene}
+                            </button>
+                          ))}
+                        </div>
+                      </header>
+
+                      {/* Grid 加入 key 以觸發篩選時的動畫 */}
+                      <div key={activeFilter} className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8 relative z-10 animate-in fade-in duration-500">
+                        {filteredProfiles.map((profile) => (
+                          <button
+                            key={profile.id}
+                            onClick={() => handleProfileSelect(profile)}
+                            className="group relative flex flex-col text-left overflow-hidden rounded-2xl border border-white/10 transition-all duration-500 hover:-translate-y-1 hover:border-[#FFE100]/50 shadow-lg aspect-[3/4] md:aspect-[4/5] min-h-[420px] bg-[#0A0A0A]"
+                          >
+                            {/* 底圖：讀取 Gallery 的第一張縮圖照片 */}
+                            {profile.gallery && profile.gallery.length > 0 && (
+                              <ProgressiveImage 
+                                src={profile.gallery[0].thumb} 
+                                alt={profile.name} 
+                                className="group-hover:scale-110"
+                              />
+                            )}
+
+                            {/* 預設狀態的底部漸層 (確保文字可讀性) */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-100 group-hover:opacity-0 transition-opacity duration-300"></div>
+
+                            {/* 預設狀態顯示的標題 (滑鼠移入時消失) */}
+                            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 flex flex-col opacity-100 group-hover:opacity-0 transition-opacity duration-300 z-10 w-full overflow-hidden">
+                               <h3 className="text-xl md:text-3xl font-mono font-bold text-white mb-2 tracking-widest uppercase drop-shadow-md break-words leading-tight">
+                                  {profile.name}
+                               </h3>
+                               <div className="text-sm font-medium text-[#FFE100] tracking-widest drop-shadow-md flex items-center gap-2">
+                                  {profile.icon} {profile.style}
+                               </div>
+                            </div>
+
+                            {/* Hover 狀態：毛玻璃遮罩與詳細資訊浮現 */}
+                            <div className="absolute inset-0 bg-black/80 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col p-6 md:p-8 z-20">
+                              
+                              {/* Icon 與 標題 */}
+                              <div className="flex items-center gap-4 mb-5 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                 <div className="w-12 h-12 rounded-xl bg-[#141414] border border-[#FFE100]/30 flex items-center justify-center text-[#FFE100] shrink-0 shadow-[0_0_15px_rgba(255,225,0,0.15)]">
+                                    {profile.icon}
+                                 </div>
+                                 <div className="overflow-hidden flex-1">
+                                    <h3 className="text-lg sm:text-xl font-mono font-bold text-white tracking-widest uppercase break-words leading-tight">
+                                      {profile.name}
+                                    </h3>
+                                    <div className="text-[11px] font-medium text-[#FFE100] tracking-widest mt-1">
+                                      {profile.style}
+                                    </div>
+                                 </div>
+                              </div>
+
+                              {/* 標籤 */}
+                              <div className="flex flex-wrap gap-2 mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                                {profile.scenes.map(scene => (
+                                  <span key={scene} className="text-[10px] px-2.5 py-1 rounded border border-white/20 bg-white/5 text-zinc-300 tracking-widest whitespace-nowrap">
+                                    {scene}
+                                  </span>
+                                ))}
+                              </div>
+
+                              {/* 描述文字 */}
+                              <p className="text-sm text-zinc-400 leading-relaxed line-clamp-2 md:line-clamp-3 mb-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">
+                                {profile.desc}
+                              </p>
+
+                              {/* 底部引導按鈕 */}
+                              <div className="mt-auto self-start sm:self-end transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-150 w-full sm:w-auto">
+                                 <div className="flex justify-center items-center gap-2 text-[#FFE100] text-xs font-bold tracking-widest uppercase bg-[#FFE100]/10 px-4 py-3 sm:py-2 rounded-full border border-[#FFE100]/20 w-full">
+                                    查看配方參數 <ChevronRight className="w-4 h-4" />
+                                 </div>
+                              </div>
+                            </div>
+                          </button>
+                        ))}
+                        
+                        {filteredProfiles.length === 0 && (
+                          <div className="col-span-full py-12 text-center text-zinc-500 tracking-widest">沒有找到符合此情境的配方</div>
+                        )}
+                      </div>
+                      
+                      {/* ================= 全域範例相片瀑布流 (Inspiration Gallery) ================= */}
+                      {allPhotos.length > 0 && activeFilter === '全部' && (
+                        <section className="mt-20 relative z-10 animate-in fade-in duration-700 delay-300 border-t border-white/10 pt-16">
+                          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 gap-4">
+                            <h3 className="text-2xl md:text-3xl font-light text-white tracking-widest uppercase flex items-center gap-3">
+                              <Grid className="w-6 h-6 md:w-8 md:h-8 text-[#FFE100]" />
+                              Inspiration Gallery
+                            </h3>
+                            <div className="bg-[#1A1A1A] border border-white/10 text-zinc-400 text-xs px-4 py-1.5 rounded-full tracking-widest uppercase">
+                              {allPhotos.length} Shots
+                            </div>
+                          </div>
+                          
+                          <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
+                            {allPhotos.map((photo, idx) => (
+                              <div 
+                                key={`global-photo-${idx}`} 
+                                className="break-inside-avoid relative group overflow-hidden rounded-xl border border-white/10 cursor-pointer bg-[#111]"
+                                onClick={() => { 
+                                  setLightboxData(photo); 
+                                  setShowExif(window.innerWidth >= 768); 
+                                }}
+                              >
+                                {/* 圖片本體 (相片牆讀取縮圖) */}
+                                <img 
+                                  src={photo.thumb} 
+                                  alt={`${photo.profileName} 範例`} 
+                                  className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-700 animate-in fade-in zoom-in-95" 
+                                  loading="lazy" 
+                                />
+                                
+                                {/* Hover 狀態的深色毛玻璃遮罩與資訊面板 */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex flex-col justify-end p-5">
+                                  
+                                  {/* 右上角放大圖示 */}
+                                  <div className="absolute top-4 right-4 bg-black/60 p-2.5 rounded-full backdrop-blur-md border border-white/10 shadow-lg flex items-center justify-center transform -translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                                    <Maximize2 className="w-3.5 h-3.5 text-white" />
+                                  </div>
+
+                                  <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">
+                                    {/* 配方標籤 */}
+                                    <div className="text-[#FFE100] font-mono font-bold text-xs tracking-widest uppercase mb-2 drop-shadow-md">
+                                      {photo.profileName}
+                                    </div>
+                                    
+                                    {/* EXIF: 相機與鏡頭 */}
+                                    <div className="flex flex-col gap-1.5">
+                                      <div className="text-white text-xs flex items-center gap-2 drop-shadow-md font-medium">
+                                        <FilledCameraIcon className="w-3.5 h-3.5 text-zinc-400" /> 
+                                        {photo.exif?.camera || 'Nikon Camera'}
+                                      </div>
+                                      <div className="text-zinc-300 text-[10px] flex items-center gap-2 drop-shadow-md">
+                                        <FilledLensIcon className="w-3.5 h-3.5 text-zinc-400" /> 
+                                        <span className="truncate pr-2">{photo.exif?.lens || 'Nikkor Lens'}</span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </section>
+                      )}
+
+                      <SiteFooter />
+                    </div>
+                  ) : (
+                    <div className="max-w-5xl mx-auto animate-in fade-in duration-500 pb-12">
+                      <header className="mb-12 border-b border-white/10 pb-10 relative z-10">
+                        <div className="flex items-center gap-4 mb-6 text-zinc-500">
+                          {activeProfile.icon}
+                          <span className="text-xs tracking-[0.2em] uppercase font-mono">{activeProfile.id}</span>
+                        </div>
+                        <div className="flex flex-col md:flex-row md:items-start justify-between gap-5 md:gap-4 mb-4">
+                          <h2 className="text-3xl md:text-5xl font-light text-white tracking-widest font-mono uppercase break-all md:break-words whitespace-normal">
+                            {activeProfile.name}
+                          </h2>
+                          <button onClick={handleShare} className="self-start md:self-auto flex items-center gap-2 px-4 py-2 bg-[#111111] hover:bg-[#1a1a1a] border border-white/10 rounded-lg transition-colors group shrink-0" title="複製專屬網址">
+                            {copied ? <Check className="w-4 h-4 text-green-500" /> : <Share2 className="w-4 h-4 text-zinc-400 group-hover:text-[#FFE100]" />}
+                            <span className={`text-xs tracking-widest ${copied ? 'text-green-500' : 'text-zinc-400 group-hover:text-[#FFE100]'}`}>
+                              {copied ? '已複製連結' : '分享配方'}
+                            </span>
+                          </button>
+                        </div>
+                        <h3 className="text-lg text-[#FFE100] font-medium mb-6 tracking-wide">{activeProfile.style}</h3>
+                        <div className="flex flex-wrap gap-2 mb-6">
+                          {activeProfile.scenes.map(scene => (
+                            <span key={scene} className="text-xs px-2.5 py-1 rounded border border-white/10 bg-[#1A1A1A] text-zinc-300 tracking-widest">{scene}</span>
+                          ))}
+                        </div>
+                        <p className="text-zinc-400 leading-relaxed max-w-3xl text-sm tracking-wide">{activeProfile.desc}</p>
+                      </header>
+
+                      {/* 大尺寸首圖與攤平的拍攝資訊區塊 */}
+                      {activeProfile.gallery && activeProfile.gallery.length > 0 && (
+                        <div className="mb-16 relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                          
+                          {/* 大尺寸代表圖 (Hero Image) 讀取 full 大圖 */}
+                          <div className="rounded-2xl overflow-hidden border border-white/10 mb-8 bg-[#050505] shadow-2xl flex items-center justify-center">
+                            <img 
+                              src={activeProfile.gallery[0].full} 
+                              alt={`${activeProfile.name} 首圖`} 
+                              className="w-full max-h-[60vh] md:max-h-[85vh] object-contain animate-in fade-in duration-1000"
+                              loading="lazy"
+                            />
+                          </div>
+                          
+                          {/* 攤開的 EXIF 拍攝資訊面板 */}
+                          {activeProfile.gallery[0].exif && (
+                            <div className="bg-[#111111]/80 backdrop-blur-md rounded-2xl p-6 md:p-10 border border-white/10 shadow-lg">
+                              <h3 className="text-xl font-bold text-white mb-8 tracking-widest">
+                                拍攝資訊
+                              </h3>
+
+                              {/* 頂部相機與鏡頭卡片 */}
+                              <div className="bg-[#1A1A1A] rounded-xl p-5 mb-8 border border-white/5">
+                                <div className="flex flex-col gap-4">
+                                  {/* Top Row: Camera & Lens */}
+                                  <div className="flex flex-wrap items-center gap-x-8 gap-y-4 pb-5 border-b border-white/5">
+                                    <div className="flex items-center gap-3 min-w-[140px]">
+                                       <FilledCameraIcon className="w-8 h-8 text-zinc-500" />
+                                       <span className="text-white font-bold text-lg whitespace-nowrap">{activeProfile.gallery[0].exif.camera}</span>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                       <FilledLensIcon className="w-8 h-8 text-zinc-500" />
+                                       <span className="text-white font-bold text-lg whitespace-nowrap">{activeProfile.gallery[0].exif.lens}</span>
+                                    </div>
+                                  </div>
+                                  {/* Bottom Row: Date & Focal Length */}
+                                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-10 pt-1">
+                                     <div className="flex items-center gap-3">
+                                       <span className="text-zinc-400 text-sm tracking-widest">拍攝日期：</span>
+                                       <span className="text-white font-medium text-sm">{activeProfile.gallery[0].exif.date}</span>
+                                     </div>
+                                     <div className="flex items-center gap-3">
+                                       <span className="text-zinc-400 text-sm tracking-widest">焦距：</span>
+                                       <span className="text-white font-medium text-sm">{activeProfile.gallery[0].exif.focalLength}</span>
+                                     </div>
+                                  </div>
+                                </div>
+                              </div>
+                              
+                              {/* 詳細數值 Grid */}
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+                                {/* 左欄資訊 */}
+                                <div className="space-y-1">
+                                  <div className="flex justify-between items-center text-sm py-2 border-b border-white/5"><span className="text-zinc-400 font-light tracking-widest">數位可變程式</span><span className="text-white font-bold">{activeProfile.gallery[0].exif.mode}</span></div>
+                                  <div className="flex justify-between items-center text-sm py-2 border-b border-white/5"><span className="text-zinc-400 font-light tracking-widest">ISO 感光度</span><span className="text-white font-bold">{activeProfile.gallery[0].exif.iso}</span></div>
+                                  <div className="flex justify-between items-center text-sm py-2 border-b border-white/5"><span className="text-zinc-400 font-light tracking-widest">快門速度</span><span className="text-white font-bold">{activeProfile.gallery[0].exif.shutter}</span></div>
+                                  <div className="flex justify-between items-center text-sm py-2 border-b border-white/5"><span className="text-zinc-400 font-light tracking-widest">光圈</span><span className="text-white font-bold">{activeProfile.gallery[0].exif.aperture}</span></div>
+                                  <div className="flex justify-between items-center text-sm py-2 border-b border-white/5"><span className="text-zinc-400 font-light tracking-widest">曝光補償</span><span className="text-white font-bold">{activeProfile.gallery[0].exif.ev}</span></div>
+                                  
+                                  <div className="pt-5 pb-2">
+                                    <div className="text-zinc-400 text-sm mb-3 font-light tracking-widest">AF 設定</div>
+                                    <div className="pl-5 border-l border-white/10 space-y-1">
+                                      <div className="flex justify-between items-center text-sm py-1.5"><span className="text-zinc-400 font-light tracking-widest">對焦模式</span><span className="text-white font-bold">{activeProfile.gallery[0].exif.focusMode}</span></div>
+                                      <div className="flex justify-between items-center text-sm py-1.5"><span className="text-zinc-400 font-light tracking-widest">AF 優先</span><span className="text-white font-bold">{activeProfile.gallery[0].exif.focusPriority}</span></div>
+                                      <div className="flex justify-between items-center text-sm py-1.5"><span className="text-zinc-400 font-light tracking-widest">AF 區域模式</span><span className="text-white font-bold">{activeProfile.gallery[0].exif.afArea}</span></div>
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                                {/* 右欄資訊 */}
+                                <div className="space-y-1 md:pt-0">
+                                  <div className="flex justify-between items-center text-sm py-2 border-b border-white/5"><span className="text-zinc-400 font-light tracking-widest">主動式 D-Lighting</span><span className="text-white font-bold">{activeProfile.gallery[0].exif.adl}</span></div>
+                                  <div className="flex justify-between items-center text-sm py-2 border-b border-white/5"><span className="text-zinc-400 font-light tracking-widest">測光</span><span className="text-white font-bold">{activeProfile.gallery[0].exif.metering}</span></div>
+                                  <div className="flex justify-between items-center text-sm py-2 border-b border-white/5"><span className="text-zinc-400 font-light tracking-widest">白平衡</span><span className="text-white font-bold">{activeProfile.gallery[0].exif.wb}</span></div>
+                                  <div className="flex justify-between items-center text-sm py-2 border-b border-white/5"><span className="text-zinc-400 font-light tracking-widest">柔化肌膚</span><span className="text-white font-bold">{activeProfile.gallery[0].exif.skinSoftening}</span></div>
+                                  <div className="flex justify-between items-center text-sm py-2 border-b border-white/5"><span className="text-zinc-400 font-light tracking-widest">人像印象平衡</span><span className="text-white font-bold">{activeProfile.gallery[0].exif.pib}</span></div>
+                                  <div className="flex justify-between items-center text-sm py-2 border-b border-white/5"><span className="text-zinc-400 font-light tracking-widest">閃光</span><span className="text-white font-bold">{activeProfile.gallery[0].exif.flash}</span></div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      <section className="mb-12 relative z-10">
+                        <h4 className="text-sm font-medium text-white tracking-widest uppercase mb-6 flex items-center gap-3">
+                          <span className="w-1.5 h-1.5 bg-white rounded-full"></span> 實戰機身設定
+                        </h4>
+                        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+                          {['wb', 'metering', 'adl', 'ev', 'pib'].map(key => (
+                            <div key={key} className="bg-[#0A0A0A]/90 backdrop-blur-sm p-5 rounded-xl border border-white/10">
+                              <div className="text-[10px] text-zinc-500 mb-2 tracking-widest uppercase">
+                                {key === 'wb' ? '白平衡 (WB)' : key === 'metering' ? '測光模式' : key === 'adl' ? '主動式 D-Lighting' : key === 'ev' ? '曝光補償 (EV)' : '人像印象平衡'}
+                              </div>
+                              <div className="text-white">
+                                <SettingValue value={activeProfile.camera[key]} highlight={key === 'ev'} />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="flex flex-col gap-3">
+                          {activeProfile.cameraTips.z8 && <CameraTipAccordion type="z8" tipText={activeProfile.cameraTips.z8} />}
+                          {activeProfile.cameraTips.zf && <CameraTipAccordion type="zf" tipText={activeProfile.cameraTips.zf} zfGrain={activeProfile.zfGrain} />}
+                        </div>
+                      </section>
+
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12 relative z-10">
+                        <section className="flex flex-col">
+                          <h4 className="text-sm font-medium text-white tracking-widest uppercase mb-6 flex items-center gap-3">
+                            <span className="w-1.5 h-1.5 bg-[#FFE100] rounded-full"></span> 色調曲線
+                          </h4>
+                          <div className="bg-[#0A0A0A]/90 backdrop-blur-sm rounded-xl border border-white/10 p-6 md:p-10 flex-1 flex flex-col items-center justify-center hover:border-[#FFE100]/30 transition-colors h-full">
+                            <div className="w-full max-w-sm"><ToneCurveGraph points={activeProfile.curve} /></div>
+                            <div className="mt-8 text-[10px] text-zinc-500 tracking-widest font-mono uppercase">Luma Curve Visualization</div>
+                          </div>
+                        </section>
+                        <div className="flex flex-col gap-8">
+                          <section className="flex flex-col flex-1">
+                            <h4 className="text-sm font-medium text-white tracking-widest uppercase mb-6 flex items-center gap-3">
+                              <span className="w-1.5 h-1.5 bg-white rounded-full"></span> 色彩混合器
+                            </h4>
+                            <div className="bg-[#0A0A0A]/90 backdrop-blur-sm rounded-xl border border-white/10 p-6 flex-1 flex flex-col items-center justify-center min-h-[180px] hover:border-[#FFE100]/30 transition-colors group">
+                              <div className="w-12 h-12 bg-[#141414]/90 backdrop-blur-sm rounded-full flex items-center justify-center border border-[#FFE100]/40 mb-4 shadow-[0_0_20px_rgba(255,225,0,0.15)] group-hover:border-[#FFE100]/70 transition-colors duration-500">
+                                <Sliders className="w-5 h-5 text-[#FFE100]" />
+                              </div>
+                              <div className="text-sm font-bold text-white tracking-widest mb-1.5">Philos 客製參數調整</div>
+                              <div className="text-[10px] text-zinc-400 tracking-widest uppercase font-mono">Exclusive HSL Formula</div>
+                            </div>
+                          </section>
+                          <section className="flex flex-col flex-1">
+                            <h4 className="text-sm font-medium text-white tracking-widest uppercase mb-6 flex items-center gap-3">
+                              <span className="w-1.5 h-1.5 bg-[#FFE100] rounded-full"></span> 色彩分級
+                            </h4>
+                            <div className="rounded-xl border border-white/10 group bg-[#0A0A0A]/90 backdrop-blur-sm p-6 flex-1 flex flex-col items-center justify-center min-h-[180px] hover:border-white/30 transition-colors">
+                              <div className="w-12 h-12 bg-[#141414]/90 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20 mb-4 shadow-xl group-hover:border-white/40 transition-colors duration-500">
+                                <Film className="w-5 h-5 text-zinc-300" />
+                              </div>
+                              <div className="text-sm font-bold text-white tracking-widest mb-1.5">Philos 客製色彩渲染</div>
+                              <div className="text-[10px] text-zinc-400 tracking-widest uppercase font-mono">Cinematic Color Grading</div>
+                            </div>
+                          </section>
+                        </div>
+                      </div>
+
+                      <section className="mb-10 relative z-10">
+                        <h4 className="text-sm font-medium text-white tracking-widest uppercase mb-6 flex items-center gap-3">
+                          <span className="w-1.5 h-1.5 bg-white rounded-full"></span> 銳化與細節 <span className="text-zinc-600 font-mono text-[10px]">(-5.0 ~ 5.0)</span>
+                        </h4>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                          {Object.entries(activeProfile.details).map(([key, val]) => (
+                            <div key={key} className="bg-[#0A0A0A]/90 backdrop-blur-sm p-6 rounded-xl border border-white/10 text-center hover:border-[#FFE100]/30 transition-colors">
+                              <div className="text-[10px] text-zinc-500 mb-3 tracking-widest uppercase">{key === 'clarity' ? '清晰度' : key === 'mid' ? '中範圍銳化' : key === 'sharp' ? '銳化' : '快速銳化'}</div>
+                              <div className={`font-mono text-xl ${val.includes('-') ? 'text-zinc-400' : val === '0.00' ? 'text-zinc-600' : 'text-white'}`}>{val}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </section>
+
+                      {/* 實景範例相片牆 (單一配方內) 讀取 thumb 縮圖 */}
+                      {activeProfile.gallery && activeProfile.gallery.length > 0 && (
+                        <section className="mb-10 relative z-10">
+                          <h4 className="text-sm font-medium text-white tracking-widest uppercase mb-6 flex items-center gap-3">
+                            <span className="w-1.5 h-1.5 bg-[#FFE100] rounded-full"></span> Gallery
+                          </h4>
+                          <div className="columns-1 sm:columns-2 gap-4 space-y-4">
+                            {profilePhotos.map((item, idx) => (
+                              <div 
+                                key={idx} 
+                                className="break-inside-avoid relative group overflow-hidden rounded-xl border border-white/10 cursor-pointer bg-[#111]"
+                                onClick={() => { 
+                                  setLightboxData(item); 
+                                  setShowExif(window.innerWidth >= 768); 
+                                }}
+                              >
+                                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300 z-10"></div>
+                                <img 
+                                  src={item.thumb} 
+                                  alt={`${activeProfile.name} 範例`} 
+                                  className="w-full h-auto object-cover transform group-hover:scale-105 transition-all duration-700 animate-in fade-in zoom-in-95" 
+                                  loading="lazy" 
+                                />
+                                <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 bg-black/60 p-2.5 rounded-full backdrop-blur-md border border-white/10 shadow-lg flex items-center justify-center">
+                                  <Maximize2 className="w-4 h-4 text-white" />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </section>
+                      )}
+
+                      {/* ================= 許願池 / 原始檔等候名單區塊 ================= */}
+                      <div className="relative mt-16 mb-8 overflow-hidden rounded-2xl border border-[#FFE100]/30 bg-gradient-to-br from-[#1A1A1A] to-[#0A0A0A] p-8 md:p-10 shadow-[0_0_30px_rgba(255,225,0,0.05)] group z-10 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+                        {/* 背景光暈點綴 */}
+                        <div className="absolute -top-24 -right-24 w-64 h-64 bg-[#FFE100]/10 blur-3xl rounded-full pointer-events-none group-hover:bg-[#FFE100]/20 transition-colors duration-700"></div>
+                        
+                        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+                          
+                          <div className="flex-1 text-center md:text-left">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FFE100]/10 border border-[#FFE100]/20 text-[#FFE100] text-[10px] font-bold tracking-widest uppercase mb-4">
+                              <Lock className="w-3 h-3" /> Coming Soon
+                            </div>
+                            <h3 className="text-2xl md:text-3xl font-light text-white tracking-widest mb-3">
+                              喜歡 <span className="font-bold font-mono">{activeProfile.name}</span> 這個成像配方嗎？
+                            </h3>
+                            <p className="text-sm text-zinc-400 leading-relaxed tracking-wide max-w-xl mx-auto md:mx-0">
+                              我正在籌備完整支援靈活色彩的成像配方 <strong>.NP3 </strong>，並規劃透過購買的方式取得支持創作者。若您喜觀 Philos建立的這些配方，輸入 Email 加入名單，讓我評估是否開放購買下載！
+                            </p>
+                          </div>
+
+                          <div className="w-full md:w-auto shrink-0 flex flex-col items-center gap-3 mt-4 md:mt-0">
+                            {/* 將表單元件放在這裡 */}
+                            <WaitlistForm profileName={activeProfile.name} />
+                            
+                            {/* 從眾效應：刺激轉單率的小巧思 */}
+                            <span className="text-[10px] text-zinc-500 tracking-widest">
+                              目前已有 <span className="text-white font-mono">128</span> 人敲碗許願
+                            </span>
+                          </div>
+
+                        </div>
+                      </div>
+
+                      {activeProfile.extra && (
+                        <div className="bg-[#111]/90 backdrop-blur-sm border border-[#FFE100]/30 p-5 rounded-xl text-sm text-zinc-300 flex items-start gap-4 relative z-10">
+                          <Info className="w-5 h-5 shrink-0 mt-0.5 text-[#FFE100]" />
+                          <p className="leading-relaxed tracking-wide">{activeProfile.extra}</p>
+                        </div>
+                      )}
+                      <SiteFooter />
+                    </div>
+                  )}
+                </div>
+              </main>
+            </div>
+          );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
